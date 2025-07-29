@@ -3,18 +3,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize typed.js for the hero subtitle
     const typed = new Typed('#typed-text', {
         strings: [
-            'Graduate Research Assistant',
-            'Software Engineer',
-            'Data Scientist',
-            'Startup Founder',
-            'Machine Learning Enthusiast'
+            'Research Engineer',
+            'Hardware-Software Architect',
+            'AI/ML Innovator',
+            'Startup Co-Founder',
+            'Problem Solver'
         ],
-        typeSpeed: 50,
-        backSpeed: 30,
-        backDelay: 2000,
+        typeSpeed: 60,
+        backSpeed: 40,
+        backDelay: 2500,
         loop: true,
         showCursor: true,
-        cursorChar: '|'
+        cursorChar: '█'
     });
 
     // Mobile navigation toggle
