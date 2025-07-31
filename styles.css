@@ -985,6 +985,52 @@ section {
     .cert-grid {
         grid-template-columns: 1fr;
     }
+
+    /* Games responsive */
+    .game-selector {
+        gap: 0.5rem;
+    }
+
+    .game-select-btn {
+        min-width: 80px;
+        padding: 0.75rem 1rem;
+    }
+
+    .game-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+
+    .game-card-item {
+        font-size: 1.5rem;
+    }
+
+    #snakeCanvas {
+        width: 300px;
+        height: 300px;
+    }
+
+    .wordle-cell {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+
+    /* Chatbot responsive */
+    .chatbot-window {
+        width: 300px;
+        height: 400px;
+        right: 10px;
+        bottom: 70px;
+    }
+
+    .chatbot-toggle {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        right: 10px;
+        bottom: 10px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1024,4 +1070,485 @@ section {
 /* Smooth scrolling */
 html {
     scroll-behavior: smooth;
+}
+
+/* Games Section */
+.games {
+    padding: 5rem 0;
+    background: var(--bg-primary);
+}
+
+/* Game Selector */
+.game-selector {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 3rem 0 2rem 0;
+    flex-wrap: wrap;
+}
+
+.game-select-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 1.5rem;
+    background: white;
+    border: 2px solid var(--border-color);
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    color: var(--text-secondary);
+    min-width: 100px;
+}
+
+.game-select-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-color);
+}
+
+.game-select-btn.active {
+    background: var(--gradient-primary);
+    color: white;
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-lg);
+}
+
+.game-select-btn span:first-child {
+    font-size: 1.5rem;
+}
+
+.game-select-btn span:last-child {
+    font-size: 0.9rem;
+}
+
+/* Games Container */
+.games-container {
+    position: relative;
+    margin-top: 2rem;
+}
+
+.games-grid {
+    display: grid;
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.game-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    display: none;
+}
+
+.game-card.active {
+    display: block;
+}
+
+.game-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.game-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.game-header h3 {
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.game-header p {
+    color: var(--text-secondary);
+}
+
+.game-container {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.game-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+    color: var(--text-primary);
+}
+
+.game-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.game-card-item {
+    aspect-ratio: 1;
+    background: var(--gradient-primary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    transform-style: preserve-3d;
+    position: relative;
+    border: none;
+}
+
+.game-card-item.flipped {
+    transform: rotateY(180deg);
+    background: white;
+    border: 2px solid var(--primary-color);
+}
+
+.game-card-item.matched {
+    background: var(--gradient-secondary);
+    color: white;
+}
+
+.game-card-front, .game-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+}
+
+.game-card-front {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.game-card-back {
+    background: white;
+    transform: rotateY(180deg);
+    border: 2px solid var(--primary-color);
+}
+
+.game-btn {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: block;
+    margin: 0 auto;
+}
+
+.game-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 212, 255, 0.4);
+}
+
+.win-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.win-content {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.win-content h2 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+/* Chatbot Styles */
+.chatbot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    font-family: 'Inter', sans-serif;
+}
+
+.chatbot-toggle {
+    width: 60px;
+    height: 60px;
+    background: var(--gradient-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
+    transition: all 0.3s ease;
+    border: none;
+    color: white;
+    font-size: 24px;
+}
+
+.chatbot-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(0, 212, 255, 0.4);
+}
+
+.chatbot-window {
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    width: 350px;
+    height: 500px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.chatbot-header {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chatbot-header h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.chatbot-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.message {
+    max-width: 80%;
+    padding: 12px 16px;
+    border-radius: 18px;
+    word-wrap: break-word;
+}
+
+.message.bot {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    align-self: flex-start;
+    border-bottom-left-radius: 5px;
+}
+
+.message.user {
+    background: var(--gradient-primary);
+    color: white;
+    align-self: flex-end;
+    border-bottom-right-radius: 5px;
+}
+
+.chatbot-input {
+    padding: 20px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap: 10px;
+}
+
+.chatbot-input input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid var(--border-color);
+    border-radius: 25px;
+    outline: none;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.chatbot-input input:focus {
+    border-color: var(--primary-color);
+}
+
+.chatbot-input button {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chatbot-input button:hover {
+    transform: scale(1.1);
+}
+
+.typing-indicator {
+    display: none;
+    align-self: flex-start;
+    background: var(--bg-secondary);
+    padding: 12px 16px;
+    border-radius: 18px;
+    border-bottom-left-radius: 5px;
+}
+
+.typing-dots {
+    display: flex;
+    gap: 4px;
+}
+
+.typing-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--text-secondary);
+    border-radius: 50%;
+    animation: typing 1.4s infinite ease-in-out;
+}
+
+.typing-dot:nth-child(1) { animation-delay: -0.32s; }
+.typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes typing {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1); }
+}
+
+.quick-replies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.quick-reply {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    padding: 8px 12px;
+    border-radius: 15px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.quick-reply:hover {
+    background: var(--border-color);
+    transform: translateY(-1px);
+}
+
+/* Snake Game Styles */
+#snakeCanvas {
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    background: #f8f9fa;
+    display: block;
+    margin: 0 auto 1rem auto;
+    max-width: 100%;
+}
+
+.game-controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.game-instructions {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-top: 1rem;
+}
+
+/* Wordle Game Styles */
+.wordle-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin: 1rem auto;
+    max-width: 300px;
+}
+
+.wordle-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+    width: 100%;
+}
+
+.wordle-cell {
+    width: 50px;
+    height: 50px;
+    border: 2px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    background: white;
+    transition: all 0.3s ease;
+    /* Ensure cells don't wrap or overflow */
+    min-width: 50px;
+    max-width: 50px;
+    flex-shrink: 0;
+}
+
+.wordle-cell.filled {
+    border-color: var(--text-primary);
+}
+
+.wordle-cell.correct {
+    background: #10b981;
+    color: white;
+    border-color: #10b981;
+}
+
+.wordle-cell.present {
+    background: #f59e0b;
+    color: white;
+    border-color: #f59e0b;
+}
+
+.wordle-cell.absent {
+    background: #6b7280;
+    color: white;
+    border-color: #6b7280;
+}
+
+/* Shake animation for invalid words */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+.wordle-row.shake {
+    animation: shake 0.5s ease-in-out;
 } 

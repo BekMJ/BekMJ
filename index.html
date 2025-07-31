@@ -22,6 +22,7 @@
                 <li><a href="#experience" class="nav-link">Experience</a></li>
                 <li><a href="#projects" class="nav-link">Projects</a></li>
                 <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#games" class="nav-link">Games</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
             <div class="hamburger">
@@ -351,6 +352,87 @@
         </div>
     </section>
 
+    <!-- Interactive Games Section -->
+    <section id="games" class="games">
+        <div class="container">
+            <h2 class="section-title">Interactive Games</h2>
+            <p class="section-subtitle">Experience my technical skills through interactive demonstrations</p>
+            
+            <!-- Game Selector -->
+            <div class="game-selector">
+                <button class="game-select-btn active" onclick="selectGame('memory')">
+                    <span>🧠</span>
+                    <span>Memory</span>
+                </button>
+                <button class="game-select-btn" onclick="selectGame('snake')">
+                    <span>🐍</span>
+                    <span>Snake</span>
+                </button>
+                <button class="game-select-btn" onclick="selectGame('wordle')">
+                    <span>📝</span>
+                    <span>Wordle</span>
+                </button>
+            </div>
+            
+            <!-- Game Containers -->
+            <div class="games-container">
+                <!-- Memory Game -->
+                <div class="game-card active" id="memoryGame">
+                    <div class="game-header">
+                        <h3>🧠 Memory Game</h3>
+                        <p>Test your memory and pattern recognition skills!</p>
+                    </div>
+                    <div class="game-container">
+                        <div class="game-stats">
+                            <div class="stat">Score: <span id="memoryScore">0</span></div>
+                            <div class="stat">Moves: <span id="memoryMoves">0</span></div>
+                        </div>
+                        <div class="game-grid" id="memoryGrid"></div>
+                        <button class="game-btn" onclick="resetMemoryGame()">New Game</button>
+                    </div>
+                </div>
+
+                <!-- Snake Game -->
+                <div class="game-card" id="snakeGame">
+                    <div class="game-header">
+                        <h3>🐍 Snake Game</h3>
+                        <p>Classic snake game - grow longer by eating food!</p>
+                    </div>
+                    <div class="game-container">
+                        <div class="game-stats">
+                            <div class="stat">Score: <span id="snakeScore">0</span></div>
+                            <div class="stat">Length: <span id="snakeLength">1</span></div>
+                        </div>
+                        <canvas id="snakeCanvas" width="400" height="400"></canvas>
+                        <div class="game-controls">
+                            <button class="game-btn" onclick="startSnakeGame()">Start Game</button>
+                            <button class="game-btn" onclick="pauseSnakeGame()">Pause</button>
+                        </div>
+                        <div class="game-instructions">
+                            <p>Use arrow keys or WASD to control the snake</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wordle Game -->
+                <div class="game-card" id="wordleGame">
+                    <div class="game-header">
+                        <h3>📝 Wordle</h3>
+                        <p>Guess the 5-letter word in 6 tries!</p>
+                    </div>
+                    <div class="game-container">
+                        <div class="game-stats">
+                            <div class="stat">Guesses: <span id="wordleGuesses">0</span>/6</div>
+                            <div class="stat">Wins: <span id="wordleWins">0</span></div>
+                        </div>
+                        <div class="wordle-grid" id="wordleGrid"></div>
+                        <button class="game-btn" onclick="resetWordleGame()">New Word</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Contact Section -->
     <section id="contact" class="contact">
         <div class="container">
@@ -399,6 +481,54 @@
             <p>&copy; 2024 Bilguunzaya Mijiddorj. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Chatbot -->
+    <div class="chatbot-container" id="chatbotContainer">
+        <button class="chatbot-toggle" onclick="toggleChatbot()">
+            🤖
+        </button>
+        
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="chatbot-header">
+                <span>🤖</span>
+                <h3>Bek's AI Assistant</h3>
+            </div>
+            
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="message bot">
+                    Hi! I'm Bek's AI assistant. I can help you learn more about his skills, projects, and experience. What would you like to know?
+                </div>
+                <div class="quick-replies">
+                    <button class="quick-reply" onclick="sendQuickReply('skills')">Skills</button>
+                    <button class="quick-reply" onclick="sendQuickReply('projects')">Projects</button>
+                    <button class="quick-reply" onclick="sendQuickReply('experience')">Experience</button>
+                    <button class="quick-reply" onclick="sendQuickReply('contact')">Contact</button>
+                </div>
+            </div>
+            
+            <div class="typing-indicator" id="typingIndicator">
+                <div class="typing-dots">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            </div>
+            
+            <div class="chatbot-input">
+                <input type="text" id="chatbotInput" placeholder="Ask me about Bek..." onkeypress="handleKeyPress(event)">
+                <button onclick="sendMessage()">➤</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Win Modal for Games -->
+    <div class="win-modal" id="winModal">
+        <div class="win-content">
+            <h2 id="winTitle">🎉 Congratulations!</h2>
+            <p id="winMessage">You completed the game!</p>
+            <button class="game-btn" onclick="closeWinModal()">Play Again</button>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
