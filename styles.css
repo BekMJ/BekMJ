@@ -353,16 +353,22 @@ body {
 .profile-avatar {
     width: 120px;
     height: 120px;
-    background: linear-gradient(45deg, #00d4ff, #ff6b6b, #4ecdc4);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 1rem;
-    font-size: 3rem;
-    color: white;
     position: relative;
-    animation: avatarGlow 3s ease-in-out infinite;
+    overflow: hidden;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+.profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 .profile-avatar::before {
@@ -1462,6 +1468,34 @@ html {
     transform: translateY(-1px);
 }
 
+.follow-up-suggestions {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    border-left: 4px solid var(--accent-color);
+}
+
+.follow-up-suggestions p {
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.quick-reply.follow-up {
+    background: var(--accent-color);
+    color: white;
+    border: 1px solid var(--accent-color);
+    margin: 0.25rem;
+    font-size: 0.8rem;
+    padding: 0.5rem 0.75rem;
+}
+
+.quick-reply.follow-up:hover {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
 /* Snake Game Styles */
 #snakeCanvas {
     border: 2px solid var(--border-color);
@@ -1484,6 +1518,15 @@ html {
     color: var(--text-secondary);
     font-size: 0.9rem;
     margin-top: 1rem;
+    background: var(--bg-secondary);
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.game-instructions p {
+    margin: 0.25rem 0;
+    line-height: 1.4;
 }
 
 /* Wordle Game Styles */
@@ -1493,6 +1536,13 @@ html {
     gap: 5px;
     margin: 1rem auto;
     max-width: 300px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.wordle-grid:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
 }
 
 .wordle-row {
@@ -1551,4 +1601,128 @@ html {
 
 .wordle-row.shake {
     animation: shake 0.5s ease-in-out;
+}
+
+.wordle-loading {
+    text-align: center;
+    color: var(--text-secondary);
+    font-style: italic;
+    margin: 1rem 0;
+    padding: 1rem;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-color);
+}
+
+/* Virtual Keyboard Styles */
+.wordle-keyboard {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 1rem auto;
+    max-width: 500px;
+    user-select: none;
+}
+
+.keyboard-row {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+}
+
+.keyboard-key {
+    width: 40px;
+    height: 50px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.keyboard-key:hover {
+    background: var(--bg-secondary);
+    transform: translateY(-1px);
+}
+
+.keyboard-key:active {
+    transform: translateY(0);
+}
+
+.keyboard-key.correct {
+    background: #10b981;
+    color: white;
+    border-color: #10b981;
+}
+
+.keyboard-key.present {
+    background: #f59e0b;
+    color: white;
+    border-color: #f59e0b;
+}
+
+.keyboard-key.absent {
+    background: #6b7280;
+    color: white;
+    border-color: #6b7280;
+}
+
+.keyboard-key.special {
+    width: 60px;
+    font-size: 0.8rem;
+}
+
+.keyboard-key.enter {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.keyboard-key.backspace {
+    background: var(--secondary-color);
+    color: white;
+    border-color: var(--secondary-color);
+}
+
+/* Mobile responsive design for keyboard */
+@media (max-width: 768px) {
+    .wordle-keyboard {
+        max-width: 100%;
+        gap: 6px;
+    }
+    
+    .keyboard-row {
+        gap: 4px;
+    }
+    
+    .keyboard-key {
+        width: 32px;
+        height: 45px;
+        font-size: 0.9rem;
+    }
+    
+    .keyboard-key.special {
+        width: 50px;
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .keyboard-key {
+        width: 28px;
+        height: 40px;
+        font-size: 0.8rem;
+    }
+    
+    .keyboard-key.special {
+        width: 45px;
+        font-size: 0.6rem;
+    }
 } 

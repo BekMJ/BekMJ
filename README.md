@@ -1,157 +1,88 @@
-# Bilguunzaya Mijiddorj - Portfolio Website
+# Bek Portfolio
 
 A modern, responsive portfolio website showcasing my professional experience, skills, and projects. Built with HTML, CSS, and JavaScript with a focus on creative design and smooth user experience.
 
-## 🌟 Features
+## 🖼️ Profile Picture Setup
 
-- **Modern Design**: Clean, professional layout with gradient backgrounds and smooth animations
-- **Responsive**: Fully responsive design that works on all devices
-- **Interactive Elements**: 
-  - Typing animation in hero section
-  - Smooth scrolling navigation
-  - Hover effects and animations
-  - Floating particles background
-  - Scroll progress indicator
-- **Sections**:
-  - Hero section with animated typing
-  - About section with education highlights
-  - Professional experience timeline
-  - Projects showcase
-  - Skills and certifications
-  - Contact information
+To add your profile picture:
 
-## 🚀 Technologies Used
+1. **Save your profile picture** as `profile-picture.jpg` in the root directory of this project
+2. **Image requirements:**
+   - Format: JPG or PNG
+   - Size: At least 240x240 pixels (will be displayed as 120x120)
+   - Style: Professional headshot or portrait
+   - Background: Clean, professional setting
 
-- **HTML5**: Semantic markup
-- **CSS3**: Modern styling with CSS Grid, Flexbox, and animations
-- **JavaScript**: Interactive functionality and animations
-- **Typed.js**: Typing animation library
-- **Font Awesome**: Icons
-- **Google Fonts**: Inter font family
-
-## 📁 Project Structure
-
-```
-portfolio/
-├── index.html          # Main HTML file
-├── styles.css          # CSS styles
-├── script.js           # JavaScript functionality
-└── README.md           # Project documentation
-```
-
-## 🎨 Design Features
-
-- **Color Scheme**: Purple gradient theme with professional colors
-- **Typography**: Inter font for modern, clean appearance
-- **Animations**: Smooth transitions, hover effects, and scroll animations
-- **Layout**: CSS Grid and Flexbox for responsive design
-- **Visual Effects**: 
-  - Glassmorphism effects
-  - Gradient backgrounds
-  - Shadow effects
-  - Parallax scrolling
-
-## 🌐 Hosting on GitHub Pages
-
-### Step 1: Create a GitHub Repository
-
-1. Go to [GitHub](https://github.com) and sign in
-2. Click the "+" icon in the top right corner
-3. Select "New repository"
-4. Name your repository: `your-username.github.io` (replace `your-username` with your actual GitHub username)
-5. Make it public
-6. Click "Create repository"
-
-### Step 2: Upload Your Files
-
-1. Clone the repository to your local machine:
-   ```bash
-   git clone https://github.com/your-username/your-username.github.io.git
-   cd your-username.github.io
+3. **Alternative formats:** If you prefer PNG, update the HTML:
+   ```html
+   <img src="profile-picture.png" alt="Bek - Computer Science Graduate Student" class="profile-image">
    ```
 
-2. Copy all your portfolio files (index.html, styles.css, script.js) into this directory
+The profile picture will be displayed as a circular avatar in the hero section with a subtle border and shadow effect.
 
-3. Add, commit, and push your files:
-   ```bash
-   git add .
-   git commit -m "Initial portfolio website"
-   git push origin main
-   ```
+## Features
 
-### Step 3: Enable GitHub Pages
+- Responsive design for all devices
+- Interactive games (Memory, Snake, Wordle)
+- AI-powered chatbot with comprehensive knowledge base
+- Smooth animations and transitions
+- Professional experience timeline
+- Skills and certifications showcase
+- Project portfolio with detailed descriptions
+- Contact information and social links
 
-1. Go to your repository on GitHub
-2. Click on "Settings" tab
-3. Scroll down to "GitHub Pages" section
-4. Under "Source", select "Deploy from a branch"
-5. Choose "main" branch
-6. Click "Save"
+## Technologies Used
 
-### Step 4: Access Your Website
+- HTML5
+- CSS3 (with animations and responsive design)
+- JavaScript (ES6+)
+- Font Awesome icons
+- Typed.js for animated text
+- External APIs for games (Dictionary API, Datamuse API)
 
-Your portfolio will be available at: `https://your-username.github.io`
+## Games Included
 
-## 🔧 Customization
+1. **Memory Game** - Card matching with score tracking
+2. **Snake Game** - Classic snake with modern controls
+3. **Wordle** - Word guessing game with API integration
 
-### Personal Information
-Update the following in `index.html`:
-- Name and title in the hero section
-- Contact information in the contact section
-- Social media links
-- Professional experience details
-- Project descriptions
+## Chatbot Features
 
-### Styling
-Modify `styles.css` to customize:
-- Color scheme (update CSS variables in `:root`)
-- Fonts
-- Layout spacing
-- Animation timings
+- Comprehensive knowledge base about Bek's background
+- Fuzzy matching for natural language understanding
+- Context awareness and conversation memory
+- Sentiment analysis for personalized responses
+- Quick reply buttons for common questions
+- Follow-up suggestions for deeper conversations
 
-### Functionality
-Edit `script.js` to:
-- Change typing animation text
-- Modify animation effects
-- Add new interactive features
+## Setup Instructions
 
-## 📱 Responsive Design
+1. Clone the repository
+2. Add your profile picture (see above)
+3. Open `index.html` in a web browser
+4. Customize content in `script.js` and `index.html` as needed
 
-The website is fully responsive and optimized for:
-- Desktop computers
-- Tablets
-- Mobile phones
-- All modern browsers
+## Customization
 
-## 🎯 Performance Features
+- Update personal information in `script.js` (bekKnowledgeBase)
+- Modify colors and styling in `styles.css`
+- Add or remove sections in `index.html`
+- Customize chatbot responses in `script.js`
 
-- Optimized images and assets
-- Efficient CSS animations
-- Smooth scrolling
-- Fast loading times
-- SEO-friendly structure
+## Browser Compatibility
 
-## 🔗 External Dependencies
+- Chrome (recommended)
+- Firefox
+- Safari
+- Edge
 
-- **Typed.js**: For typing animation effect
-- **Font Awesome**: For icons
-- **Google Fonts**: For typography
+## Performance
 
-## 📄 License
+- Optimized for fast loading
+- Minimal external dependencies
+- Efficient JavaScript algorithms
+- Responsive image handling
 
-This project is open source and available under the [MIT License](LICENSE).
+## License
 
-## 🤝 Contributing
-
-Feel free to fork this project and customize it for your own portfolio. If you find any bugs or have suggestions for improvements, please open an issue or submit a pull request.
-
-## 📞 Contact
-
-For questions or support, feel free to reach out:
-- Email: Bek@ou.edu
-- Phone: (405) 981-8456
-- Location: Norman, OK
-
----
-
-**Note**: Remember to replace placeholder content with your actual information before deploying your portfolio! 
+This project is open source and available under the MIT License. 

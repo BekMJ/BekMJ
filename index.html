@@ -53,12 +53,12 @@
                     </p>
                     <div class="hero-stats">
                         <div class="stat-item">
-                            <span class="stat-number">3.7</span>
-                            <span class="stat-label">GPA</span>
+                            <span class="stat-number">2</span>
+                            <span class="stat-label">Full Scholarships</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-number">$4K</span>
-                            <span class="stat-label">Award</span>
+                            <span class="stat-number">100%</span>
+                            <span class="stat-label">Merit-Based</span>
                         </div>
                         <div class="stat-item">
                             <span class="stat-number">∞</span>
@@ -79,7 +79,7 @@
                 <div class="hero-image">
                     <div class="profile-card">
                         <div class="profile-avatar">
-                            <i class="fas fa-user"></i>
+                            <img src="profile-picture.jpg" alt="Bek - Computer Science Graduate Student" class="profile-image">
                         </div>
                         <div class="profile-info">
                             <h3>Bek</h3>
@@ -174,6 +174,38 @@
                     <div class="timeline-marker"></div>
                     <div class="timeline-content">
                         <div class="timeline-header">
+                            <h3>University Residence Life Community Assistant</h3>
+                            <span class="timeline-date">Aug 2022 - May 2025</span>
+                        </div>
+                        <h4>University of Oklahoma</h4>
+                        <ul>
+                            <li>Front desk assistance and administrative support for campus housing</li>
+                            <li>College students campus assistance and guidance</li>
+                            <li>Community building and student support services</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <h3>New Sooner Orientation Guide</h3>
+                            <span class="timeline-date">May 2022 - Aug 2022</span>
+                        </div>
+                        <h4>University of Oklahoma</h4>
+                        <ul>
+                            <li>Helped incoming freshman students register for classes</li>
+                            <li>Guided new students around campus and facilities</li>
+                            <li>Assisted with pre-campus life preparation and transition</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-header">
                             <h3>Data Science Intern</h3>
                             <span class="timeline-date">May 2023 - Jan 2024</span>
                         </div>
@@ -182,6 +214,22 @@
                             <li>Assisted in implementing machine learning models to solve real-world business problems</li>
                             <li>Led creation of custom database system tailored to organizational needs</li>
                             <li>Developed chatbot leveraging OpenAI API for automated customer queries</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <h3>Foods & Services Worker</h3>
+                            <span class="timeline-date">Sep 2021 - Mar 2022</span>
+                        </div>
+                        <h4>University of Oklahoma</h4>
+                        <ul>
+                            <li>Cashier duties and customer service in campus dining facilities</li>
+                            <li>Food preparation and cooking responsibilities</li>
+                            <li>Cleaning and maintenance duties to ensure facility standards</li>
                         </ul>
                     </div>
                 </div>
@@ -194,6 +242,29 @@
         <div class="container">
             <h2 class="section-title">Leadership & Projects</h2>
             <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h3>XHale Health</h3>
+                    <p class="project-role">iOS Research App</p>
+                    <p class="project-description">
+                        iOS app for real-time carbon monoxide (CO) and temperature monitoring using BLE sensors. 
+                        Developed for research at OU Electrical Engineering Department with Firebase integration, 
+                        user authentication, and data export capabilities.
+                    </p>
+                    <div class="project-highlights">
+                        <span class="highlight-tag">iOS</span>
+                        <span class="highlight-tag">Swift</span>
+                        <span class="highlight-tag">BLE</span>
+                        <span class="highlight-tag">Firebase</span>
+                        <span class="highlight-tag">Research</span>
+                    </div>
+                    <a href="#" class="project-link" target="_blank">
+                        View Project <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+
                 <div class="project-card">
                     <div class="project-icon">
                         <i class="fas fa-rocket"></i>
@@ -426,6 +497,21 @@
                             <div class="stat">Wins: <span id="wordleWins">0</span></div>
                         </div>
                         <div class="wordle-grid" id="wordleGrid"></div>
+                        <div class="wordle-loading" id="wordleLoading" style="display: none;">
+                            <p>Loading new word...</p>
+                        </div>
+                        <div class="wordle-keyboard" id="wordleKeyboard">
+                            <!-- Keyboard will be generated by JavaScript -->
+                        </div>
+                        <div class="game-instructions">
+                            <p><strong>How to play:</strong></p>
+                            <p>• Type letters to fill the grid</p>
+                            <p>• Press Enter to submit your guess</p>
+                            <p>• Green = correct letter & position</p>
+                            <p>• Yellow = correct letter, wrong position</p>
+                            <p>• Gray = letter not in word</p>
+                            <p>• <em>Words are validated using a dictionary API</em></p>
+                        </div>
                         <button class="game-btn" onclick="resetWordleGame()">New Word</button>
                     </div>
                 </div>
@@ -478,7 +564,7 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2024 Bilguunzaya Mijiddorj. All rights reserved.</p>
+            <p>&copy; 2025 Bilguunzaya Mijiddorj. All rights reserved.</p>
         </div>
     </footer>
 
@@ -502,6 +588,8 @@
                     <button class="quick-reply" onclick="sendQuickReply('skills')">Skills</button>
                     <button class="quick-reply" onclick="sendQuickReply('projects')">Projects</button>
                     <button class="quick-reply" onclick="sendQuickReply('experience')">Experience</button>
+                    <button class="quick-reply" onclick="sendQuickReply('education')">Education</button>
+                    <button class="quick-reply" onclick="sendQuickReply('research')">Research</button>
                     <button class="quick-reply" onclick="sendQuickReply('contact')">Contact</button>
                 </div>
             </div>
