@@ -13,10 +13,9 @@ const skills = ['Python', 'React', 'AI/ML']
 
 export default function Hero() {
   return (
-    <section className="relative flex items-center justify-center min-h-[80vh] bg-gradient-to-br from-blue-50 via-indigo-100 to-purple-50 overflow-hidden">
-      {/* Decorative Blobs */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-blue-200 rounded-full blur-3xl opacity-30 -z-10" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-200 rounded-full blur-3xl opacity-30 -z-10" />
+    <section className="relative flex items-center justify-center min-h-[80vh] overflow-hidden aurora">
+      {/* Subtle gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50/70 via-indigo-50/60 to-purple-50/70 -z-10" />
 
       <div className="container mx-auto flex flex-col lg:flex-row items-center gap-16 px-6 py-24 z-10">
         {/* Left: Text */}
@@ -48,11 +47,11 @@ export default function Hero() {
           </div>
           {/* Buttons */}
           <div className="flex gap-4 mt-8">
-            <button className="btn-primary flex items-center gap-2">
+            <button className="btn-primary flex items-center gap-2 shine-on-hover">
               <Rocket className="h-5 w-5" />
               Explore My Work
             </button>
-            <button className="btn-secondary flex items-center gap-2">
+            <button className="btn-secondary flex items-center gap-2 hover-glow">
               <Send className="h-5 w-5" />
               Let's Connect
             </button>
@@ -60,7 +59,7 @@ export default function Hero() {
         </div>
         {/* Right: Profile Card */}
         <div className="flex-1 flex justify-center">
-          <div className="bg-white/80 rounded-2xl shadow-xl p-8 flex flex-col items-center border border-blue-100">
+          <div className="glass rounded-2xl p-8 flex flex-col items-center border border-blue-100 tilt-on-hover">
             <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white text-3xl font-bold mb-4 shadow-lg">
               BM
             </div>

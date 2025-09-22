@@ -44,15 +44,15 @@ const Navigation = () => {
       animate={{ y: 0 }}
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         scrolled 
-          ? 'bg-white/98 shadow-lg backdrop-blur-md' 
-          : 'bg-white/95'
+          ? 'glass shadow-lg' 
+          : 'bg-white/90 backdrop-blur'
       }`}
     >
       <div className="container mx-auto px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <motion.div 
-            className="text-2xl font-bold gradient-text"
+            className="text-2xl font-bold gradient-text shine-on-hover"
             whileHover={{ scale: 1.05 }}
           >
             BM
@@ -68,7 +68,7 @@ const Navigation = () => {
                   e.preventDefault()
                   scrollToSection(item.href)
                 }}
-                className="text-gray-700 hover:text-blue-500 font-medium transition-colors duration-300 relative group"
+                className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-300 relative group"
                 whileHover={{ y: -2 }}
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}

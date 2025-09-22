@@ -213,7 +213,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-white p-6 rounded-xl shadow-lg hover-lift"
+                className="glass p-6 rounded-xl hover-glow tilt-on-hover shine-on-hover border"
               >
                 <project.icon className="h-12 w-12 text-blue-500 mb-4" />
                 <h3 className="text-xl font-bold mb-2">{project.title}</h3>
@@ -221,7 +221,7 @@ export default function Home() {
                 <p className="text-gray-600 mb-4">{project.description}</p>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {project.tags.map(tag => (
-                    <span key={tag} className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm">
+                    <span key={tag} className="px-3 py-1 bg-blue-100/70 text-blue-700 rounded-full text-sm border border-blue-200">
                       {tag}
                     </span>
                   ))}
@@ -231,7 +231,7 @@ export default function Home() {
                     href={project.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center text-blue-500 hover:text-blue-600 font-medium"
+                    className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium"
                   >
                     Visit Website
                     <Globe className="ml-2 h-4 w-4" />
