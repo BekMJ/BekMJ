@@ -197,6 +197,14 @@ export default function Home() {
                 role: 'Executive',
                 description: 'Served as Head of OU Computer Science Club, managing events and student engagement.',
                 tags: ['Leadership', 'Community', 'Events']
+              },
+              {
+                icon: Globe,
+                title: 'OU Free Food',
+                role: 'Creator',
+                description: 'Lightweight site for OU students to discover free food events with list/week/month views, advanced filters, local submissions, and a GitHub Actions scraper importing OU Engage events. Deployed on GitHub Pages with zero server maintenance.',
+                tags: ['Next.js', 'GitHub Pages', 'GitHub Actions', 'Calendar', 'Scraper'],
+                link: 'https://bekmj.github.io/OUFreeFood/'
               }
             ].map((project, index) => (
               <motion.div
