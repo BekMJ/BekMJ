@@ -1,0 +1,7 @@
+I’m a master's student in Electrical and Computer Engineering at the University of Oklahoma with a background in Computer Science and a strong focus on data science, embedded systems, and intelligent software development. Backed by a full scholarship and multiple honors—including the Young Aurora Award and the Mote Endowed Engineering Scholarship—I've built a portfolio that bridges academic rigor, impactful research, and real-world application.
+
+During my time at NovelSoft, I applied machine learning and data visualization techniques to drive operational efficiency and built tools like an OpenAI-powered chatbot and custom databases to support internal systems. As a research assistant, I've developed mobile apps for sensor integration, working on BLE-connected environmental devices, and contributed to methane emissions monitoring through software-hardware integration.
+
+I’m also the co-founder and Software Lead of NexLuSense, a tech startup where we’re developing an autonomous three-legged scooter platform (OKE Ride) that leverages vision and GPS-based navigation. On campus, I’ve served as Head of the OU Computer Science Club and a leader in the AI/ML Club, promoting hands-on learning and community collaboration.
+
+Fluent in English and Mongolian, with working knowledge of Japanese, I bring a global, interdisciplinary approach to every challenge. My toolkit includes Python, Java, React, Firebase, BLE, and cloud platforms, and I’m constantly exploring ways to build smarter systems that make a meaningful impact.
