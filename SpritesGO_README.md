@@ -18,4 +18,3 @@ AR camera placement requires a physical iOS device. The app includes a simulator
 - Consumable and reusable inventory behavior.
 - Salon grooming effects with reward payout.
 - ARKit horizontal-plane setup with non-AR fallback.
-
