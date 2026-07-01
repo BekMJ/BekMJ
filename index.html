@@ -1,1352 +1,623 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Rainy Days</title>
-  <style>
-    :root {
-      --ink: #4b4555;
-      --cream: #fff8e8;
-      --mint: #bfe6bd;
-      --deep: #3f704d;
-      --soil: #745544;
-      --peach: #f2a39a;
-      --blue: #9fd3ea;
-      --gold: #e8bf45;
-      --shadow: 0 16px 0 rgba(84, 67, 58, .14), 0 26px 50px rgba(65, 55, 73, .16);
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      overflow: hidden;
-      color: var(--ink);
-      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
-      background: #cfe9ef;
-    }
-
-    button {
-      border: 0;
-      color: inherit;
-      cursor: pointer;
-      font: inherit;
-    }
-
-    .screen {
-      display: none;
-      position: relative;
-      width: 100vw;
-      height: 100vh;
-      min-height: 590px;
-      overflow: hidden;
-      image-rendering: pixelated;
-    }
-
-    .screen.active { display: block; }
-
-    .sky, .wood-sky {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 18% 14%, rgba(255,255,255,.82) 0 10%, transparent 11%),
-        radial-gradient(circle at 74% 19%, rgba(255,255,255,.72) 0 9%, transparent 10%),
-        linear-gradient(#c9e8f3 0 58%, #eaf6e2 58% 100%);
-    }
-
-    .wood-sky {
-      background:
-        radial-gradient(circle at 18% 13%, rgba(255,255,255,.55) 0 9%, transparent 10%),
-        linear-gradient(#a9d3df 0 59%, #d5eac9 59% 100%);
-    }
-
-    .ground {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 28vh;
-      min-height: 150px;
-      background:
-        repeating-linear-gradient(90deg, rgba(255,255,255,.12) 0 10px, transparent 10px 22px),
-        linear-gradient(var(--mint) 0 38%, var(--soil) 38% 100%);
-      border-top: 7px solid #8ac784;
-    }
-
-    .hill {
-      position: absolute;
-      left: -5vw;
-      right: -5vw;
-      bottom: 20vh;
-      height: 22vh;
-      background: #a8d69c;
-      border-radius: 50% 50% 0 0;
-      opacity: .7;
-    }
-
-    .house {
-      position: absolute;
-      width: 190px;
-      height: 165px;
-      left: 60%;
-      bottom: calc(28vh - 3px);
-      transform: translateX(-50%);
-      filter: drop-shadow(0 12px 0 rgba(92, 68, 58, .12));
-    }
-
-    .cap {
-      position: absolute;
-      width: 200px;
-      height: 96px;
-      left: -5px;
-      top: 0;
-      background: var(--peach);
-      border: 5px solid #805a52;
-      border-radius: 95px 95px 28px 28px;
-      box-shadow: inset -10px -9px rgba(135, 72, 68, .14);
-    }
-
-    .spot {
-      position: absolute;
-      background: #fff8e8;
-      border: 4px solid rgba(107, 74, 68, .13);
-      border-radius: 50%;
-    }
-
-    .s1 { width: 31px; height: 31px; left: 29px; top: 31px; }
-    .s2 { width: 46px; height: 46px; left: 84px; top: 13px; }
-    .s3 { width: 25px; height: 25px; right: 26px; top: 47px; }
-
-    .base {
-      position: absolute;
-      width: 120px;
-      height: 91px;
-      left: 35px;
-      bottom: 0;
-      background: #ffe3c5;
-      border: 5px solid #8a6755;
-      border-radius: 30px 30px 10px 10px;
-    }
-
-    .door {
-      position: absolute;
-      width: 38px;
-      height: 58px;
-      left: 41px;
-      bottom: -4px;
-      background: #9b6c50;
-      border: 4px solid #6c493c;
-      border-radius: 19px 19px 5px 5px;
-    }
-
-    .tree {
-      position: absolute;
-      left: 9%;
-      bottom: 25vh;
-      width: 170px;
-      height: 230px;
-      filter: drop-shadow(0 12px 0 rgba(86, 63, 58, .1));
-    }
-
-    .trunk {
-      position: absolute;
-      width: 32px;
-      height: 130px;
-      left: 69px;
-      bottom: 0;
-      background: #a67461;
-      border: 5px solid #76574b;
-      border-radius: 18px;
-    }
-
-    .blossom {
-      position: absolute;
-      background: #f5adc4;
-      border: 5px solid #c77e99;
-      border-radius: 50%;
-    }
-
-    .b1 { width: 92px; height: 92px; left: 9px; top: 42px; }
-    .b2 { width: 108px; height: 108px; left: 49px; top: 15px; }
-    .b3 { width: 86px; height: 86px; right: 0; top: 76px; }
-    .b4 { width: 84px; height: 84px; left: 37px; top: 107px; }
-
-    .puddle {
-      position: absolute;
-      left: 31%;
-      bottom: 19vh;
-      width: 156px;
-      height: 42px;
-      background: #8bd4eb;
-      border: 5px solid #659aae;
-      border-radius: 50%;
-      box-shadow: inset 10px 8px rgba(255,255,255,.35);
-    }
-
-    .start-wrap {
-      position: absolute;
-      z-index: 5;
-      top: 20%;
-      left: 50%;
-      transform: translateX(-50%);
-      text-align: center;
-    }
-
-    .logo {
-      margin-bottom: 12px;
-      color: #416347;
-      font-family: "Brush Script MT", "Segoe Script", cursive;
-      font-size: clamp(58px, 9vw, 102px);
-      font-weight: 400;
-      text-shadow: 0 4px 0 #fff8e8;
-    }
-
-    .vine {
-      position: relative;
-      width: 184px;
-      height: 76px;
-      background: #b9e9a4;
-      border: 5px solid var(--deep);
-      border-radius: 10px;
-      box-shadow: var(--shadow);
-      font-size: 25px;
-      font-weight: 900;
-    }
-
-    .vine:before, .vine:after {
-      content: "";
-      position: absolute;
-      inset: -14px -19px;
-      border: 5px solid #376c3c;
-      border-left-color: transparent;
-      border-radius: 24px;
-      transform: rotate(-8deg);
-    }
-
-    .vine:after {
-      inset: -7px -24px;
-      border-right-color: transparent;
-      transform: rotate(8deg);
-    }
-
-    .settings-button {
-      position: absolute;
-      z-index: 20;
-      top: 18px;
-      left: 18px;
-      min-width: 112px;
-      min-height: 46px;
-      padding: 9px 14px;
-      background: #b9e9a4;
-      border: 5px solid var(--deep);
-      border-radius: 8px;
-      box-shadow: 0 8px 0 rgba(77, 86, 67, .16);
-      font-weight: 900;
-    }
-
-    .settings-panel {
-      display: none;
-      position: absolute;
-      z-index: 30;
-      top: 76px;
-      left: 18px;
-      width: min(330px, calc(100vw - 36px));
-      padding: 18px;
-      background: rgba(255, 248, 232, .96);
-      border: 5px solid #7e6a5e;
-      border-radius: 10px;
-      box-shadow: var(--shadow);
-    }
-
-    .settings-panel.open { display: block; }
-
-    .settings-panel h2 {
-      margin: 0 0 14px;
-      font-size: 24px;
-      letter-spacing: 0;
-    }
-
-    .setting-row {
-      display: grid;
-      gap: 7px;
-      margin-top: 12px;
-      font-weight: 900;
-      text-align: left;
-    }
-
-    .setting-row select,
-    .setting-row input[type="range"] {
-      width: 100%;
-      min-height: 38px;
-      accent-color: #6ca85f;
-    }
-
-    .setting-row select {
-      padding: 7px 9px;
-      color: var(--ink);
-      background: #f8ffe9;
-      border: 4px solid #6f8a63;
-      border-radius: 7px;
-      font: inherit;
-      font-weight: 800;
-    }
-
-    .settings-close {
-      width: 100%;
-      margin-top: 16px;
-      min-height: 42px;
-      background: #b9e9a4;
-      border: 4px solid var(--deep);
-      border-radius: 8px;
-      font-weight: 900;
-    }
-
-    .panel {
-      position: relative;
-      z-index: 6;
-      width: min(980px, calc(100vw - 36px));
-      margin: 0 auto;
-      padding-top: min(7vh, 58px);
-      text-align: center;
-    }
-
-    h1 {
-      margin: 0 0 26px;
-      color: #4f5648;
-      font-size: clamp(30px, 4vw, 52px);
-      letter-spacing: 0;
-      text-shadow: 0 4px 0 #fff8e8;
-    }
-
-    .row {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(120px, 1fr));
-      gap: 18px;
-    }
-
-    .card, .option, .dialogue, .status, .final {
-      background: rgba(255, 248, 232, .94);
-      border: 5px solid #7e6a5e;
-      border-radius: 10px;
-      box-shadow: var(--shadow);
-    }
-
-    .card, .option {
-      display: grid;
-      place-items: center;
-      min-height: 178px;
-      padding: 18px;
-      transition: transform .15s ease;
-    }
-
-    .card:hover, .option:hover, .control:hover, .dialogue button:hover {
-      transform: translateY(-3px);
-    }
-
-    .label {
-      margin-top: 10px;
-      font-size: 20px;
-      font-weight: 900;
-    }
-
-    .custom {
-      display: grid;
-      grid-template-columns: 230px 1fr;
-      gap: 26px;
-      width: min(790px, 100%);
-      margin: 0 auto;
-      padding: 24px;
-      background: rgba(255, 248, 232, .72);
-      border: 5px solid rgba(126, 106, 94, .36);
-      border-radius: 10px;
-    }
-
-    .preview {
-      display: grid;
-      min-height: 230px;
-      place-items: center;
-    }
-
-    .options {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 13px;
-      margin-top: 18px;
-    }
-
-    .option {
-      min-height: 66px;
-      font-weight: 900;
-    }
-
-    .toggles {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 18px;
-    }
-
-    .toggle {
-      padding: 10px 12px;
-      background: rgba(255,255,255,.72);
-      border: 3px solid rgba(126,106,94,.28);
-      border-radius: 8px;
-      font-weight: 800;
-    }
-
-    .rain {
-      position: absolute;
-      z-index: 2;
-      inset: 0;
-      pointer-events: none;
-    }
-
-    .drop {
-      position: absolute;
-      top: -13vh;
-      width: 3px;
-      height: 25px;
-      background: rgba(105, 145, 174, .55);
-      animation: rain .9s linear infinite;
-    }
-
-    @keyframes rain { to { transform: translateY(118vh); } }
-
-    .player, .tsuki {
-      position: absolute;
-      z-index: 7;
-      bottom: 17vh;
-      width: 126px;
-      height: 126px;
-      transition: left .18s, bottom .18s, transform .8s, opacity .55s;
-    }
-
-    .player { left: 22%; }
-    .tsuki { right: 20%; }
-
-    .dialogue {
-      position: absolute;
-      z-index: 10;
-      left: 50%;
-      bottom: 28px;
-      width: min(870px, calc(100vw - 32px));
-      padding: 17px;
-      transform: translateX(-50%);
-      text-align: center;
-      line-height: 1.45;
-    }
-
-    .dialogue strong {
-      display: block;
-      color: #557a57;
-      margin-bottom: 4px;
-    }
-
-    .dialogue button, .control, .small {
-      margin-top: 12px;
-      min-height: 44px;
-      padding: 10px 16px;
-      background: #bfe6bd;
-      border: 4px solid #5d8055;
-      border-radius: 8px;
-      font-weight: 900;
-      box-shadow: 0 7px 0 rgba(77, 86, 67, .16);
-    }
-
-    .map {
-      display: none;
-      position: absolute;
-      z-index: 12;
-      top: 50%;
-      left: 50%;
-      width: min(760px, calc(100vw - 34px));
-      height: min(520px, calc(100vh - 110px));
-      padding: 24px;
-      transform: translate(-50%, -50%);
-      background: linear-gradient(135deg, #e8cf97, #fff0bd 48%, #d8ba79);
-      border: 8px solid #8a6755;
-      border-radius: 18px 40px 14px 34px;
-      box-shadow: 0 20px 70px rgba(63, 48, 41, .35);
-      clip-path: polygon(3% 5%,17% 1%,34% 6%,49% 2%,67% 7%,86% 2%,99% 8%,96% 33%,100% 51%,94% 73%,98% 96%,75% 92%,61% 99%,44% 94%,26% 98%,4% 92%,8% 70%,2% 54%,7% 32%);
-    }
-
-    .map.show { display: block; animation: pop .45s ease both; }
-    @keyframes pop { from { opacity: 0; transform: translate(-50%, -46%) scale(.9); } }
-
-    .map-title {
-      font-family: "Brush Script MT", "Segoe Script", cursive;
-      font-size: clamp(26px, 5vw, 46px);
-      font-weight: 400;
-    }
-
-    .map-lines {
-      position: absolute;
-      inset: 90px 54px 54px;
-      border: 5px dashed rgba(89, 80, 55, .48);
-      border-radius: 46% 54% 44% 56%;
-    }
-
-    .map-label {
-      position: absolute;
-      z-index: 2;
-      font-family: "Brush Script MT", "Segoe Script", cursive;
-      font-size: clamp(22px, 3vw, 34px);
-      font-weight: 400;
-      color: #5c4938;
-      text-shadow: 0 2px 0 rgba(255, 244, 202, .75);
-    }
-
-    .compass {
-      position: absolute;
-      z-index: 2;
-      right: 42px;
-      top: 34px;
-      width: 116px;
-      height: 116px;
-      color: #5c4938;
-      font-family: Georgia, serif;
-      font-weight: 900;
-    }
-
-    .compass:before,
-    .compass:after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      background: #806646;
-      transform: translate(-50%, -50%);
-    }
-
-    .compass:before { width: 5px; height: 74px; }
-    .compass:after { width: 74px; height: 5px; }
-    .compass span { position: absolute; }
-    .compass .north { top: 0; left: 50%; transform: translateX(-50%); }
-    .compass .south { bottom: 0; left: 50%; transform: translateX(-50%); }
-    .compass .west { left: 0; top: 50%; transform: translateY(-50%); }
-    .compass .east { right: 0; top: 50%; transform: translateY(-50%); }
-
-    .mountains {
-      position: absolute;
-      z-index: 1;
-      left: 16%;
-      top: 19%;
-      width: 210px;
-      height: 105px;
-    }
-
-    .mountain {
-      position: absolute;
-      bottom: 0;
-      width: 0;
-      height: 0;
-      border-left: 52px solid transparent;
-      border-right: 52px solid transparent;
-      border-bottom: 92px solid rgba(111, 128, 105, .7);
-      filter: drop-shadow(0 4px 0 rgba(90, 70, 52, .2));
-    }
-
-    .mountain:after {
-      content: "";
-      position: absolute;
-      left: -18px;
-      top: 20px;
-      width: 0;
-      height: 0;
-      border-left: 18px solid transparent;
-      border-right: 18px solid transparent;
-      border-bottom: 32px solid rgba(255, 247, 226, .8);
-    }
-
-    .mountain.two {
-      left: 70px;
-      border-left-width: 62px;
-      border-right-width: 62px;
-      border-bottom-width: 105px;
-      border-bottom-color: rgba(91, 119, 97, .72);
-    }
-
-    .mountain.three {
-      left: 138px;
-      border-left-width: 44px;
-      border-right-width: 44px;
-      border-bottom-width: 78px;
-      border-bottom-color: rgba(130, 142, 105, .68);
-    }
-
-    .portal {
-      position: absolute;
-      z-index: 8;
-      right: 23%;
-      bottom: 20vh;
-      width: 0;
-      height: 0;
-      border-radius: 50%;
-      background:
-        radial-gradient(circle at 48% 45%, #fff 0 5%, transparent 7%),
-        radial-gradient(circle at 60% 56%, #8ed6ff 0 8%, transparent 16%),
-        radial-gradient(circle, #f2a5ff 0 16%, #7465de 37%, #211844 66%, transparent 69%);
-      box-shadow: 0 0 34px #9462e8;
-      opacity: 0;
-      transition: all .7s ease;
-    }
-
-    .portal.open {
-      width: 180px;
-      height: 112px;
-      opacity: 1;
-      animation: swirl 1.4s linear infinite;
-    }
-
-    @keyframes swirl { to { filter: hue-rotate(360deg); } }
-    .sucked { transform: translate(42vw, -5vh) scale(.12) rotate(24deg); opacity: 0; }
-
-    #fields {
-      background:
-        linear-gradient(rgba(201, 232, 243, .8), rgba(251, 225, 122, .25) 48%, transparent 49%),
-        repeating-linear-gradient(86deg, #dcae33 0 10px, #f0cc62 10px 20px, #e5b843 20px 28px);
-    }
-
-    #fields.castle-mode {
-      background:
-        linear-gradient(90deg, rgba(255,255,255,.14) 0 8px, transparent 8px 16px),
-        linear-gradient(#bbb4c5 0 13%, #ddd4cf 13% 72%, #aa9184 72% 100%);
-    }
-
-    .castle {
-      position: absolute;
-      top: 14%;
-      left: 50%;
-      width: min(420px, 54vw);
-      height: 205px;
-      transform: translateX(-50%);
-      background: linear-gradient(90deg, #ece7dc, #fffdf5 48%, #d7cfc1);
-      border: 6px solid #c9a83f;
-      border-bottom: 0;
-      border-radius: 10px 10px 0 0;
-      box-shadow: 0 15px 0 rgba(123, 83, 29, .1);
-    }
-
-    .castle-window {
-      position: absolute;
-      top: 54px;
-      width: 38px;
-      height: 58px;
-      background: linear-gradient(#9dd5ef, #fff4c9);
-      border: 5px solid #b99435;
-      border-radius: 20px 20px 6px 6px;
-      box-shadow: inset 0 -10px rgba(92, 112, 145, .14);
-    }
-
-    .castle-window.one { left: 68px; }
-    .castle-window.two { right: 68px; }
-
-    .castle-door {
-      position: absolute;
-      left: 50%;
-      bottom: 0;
-      width: 72px;
-      height: 92px;
-      transform: translateX(-50%);
-      background: #8b6656;
-      border: 6px solid #6a4c42;
-      border-bottom: 0;
-      border-radius: 36px 36px 0 0;
-    }
-
-    .castle-flag {
-      position: absolute;
-      top: -76px;
-      width: 44px;
-      height: 34px;
-      background: #f3a7bd;
-      border: 4px solid #8b5c68;
-      border-left: 0;
-      border-radius: 0 14px 14px 0;
-    }
-
-    .castle-flag:before {
-      content: "";
-      position: absolute;
-      left: -6px;
-      top: -24px;
-      width: 5px;
-      height: 78px;
-      background: #7f6a46;
-    }
-
-    .castle-flag.left { left: 8px; }
-    .castle-flag.right { right: 8px; }
-
-    .castle:before, .castle:after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      width: 82px;
-      height: 258px;
-      background: linear-gradient(#fffdf5, #d7cfc1);
-      border: 6px solid #c9a83f;
-      border-bottom: 0;
-      border-radius: 36px 36px 0 0;
-    }
-
-    .castle:before { left: -50px; }
-    .castle:after { right: -50px; }
-
-    .castle-interior {
-      display: none;
-      position: absolute;
-      inset: 0;
-      z-index: 5;
-      background:
-        radial-gradient(circle at 50% 33%, rgba(255, 246, 194, .42) 0 12%, transparent 13%),
-        linear-gradient(90deg, transparent 0 12%, rgba(255,255,255,.18) 12% 13%, transparent 13% 25%),
-        linear-gradient(#b8b0c3 0 16%, #ded4ce 16% 72%, #9b8377 72% 100%);
-    }
-
-    #fields.castle-mode .castle-interior { display: block; }
-    #fields.castle-mode .castle { display: none; }
-    #fields.castle-mode #grainLayer,
-    #fields.castle-mode .field-ui,
-    #fields.castle-mode .status { display: none; }
-    #fields.castle-mode .field-player {
-      left: 50% !important;
-      bottom: 18vh !important;
-    }
-
-    .castle-arch {
-      position: absolute;
-      left: 50%;
-      top: 10%;
-      width: min(520px, 72vw);
-      height: 250px;
-      transform: translateX(-50%);
-      background: linear-gradient(#f7f2e8, #d8c8bc);
-      border: 8px solid #9a8175;
-      border-radius: 160px 160px 18px 18px;
-      box-shadow: inset 0 -18px rgba(110, 89, 81, .12);
-    }
-
-    .castle-banner {
-      position: absolute;
-      top: 12%;
-      width: 70px;
-      height: 150px;
-      background: linear-gradient(#f6b6ca, #e891aa);
-      border: 5px solid #8b5c68;
-      border-radius: 0 0 26px 26px;
-    }
-
-    .castle-banner.left { left: 16%; }
-    .castle-banner.right { right: 16%; }
-
-    .paper-note {
-      position: absolute;
-      z-index: 11;
-      left: 50%;
-      bottom: 24vh;
-      width: min(360px, 78vw);
-      min-height: 150px;
-      padding: 22px 20px 18px;
-      transform: translateX(-50%) rotate(-2deg);
-      background: #fff4c8;
-      border: 5px solid #8f714d;
-      border-radius: 8px;
-      box-shadow: 0 12px 0 rgba(103, 76, 56, .18);
-      font-family: Georgia, serif;
-      font-size: clamp(16px, 2.2vw, 22px);
-      line-height: 1.35;
-      text-align: center;
-    }
-
-    .paper-note:before {
-      content: "";
-      position: absolute;
-      left: 50%;
-      top: -18px;
-      width: 54px;
-      height: 28px;
-      transform: translateX(-50%) rotate(3deg);
-      background: rgba(244, 204, 116, .78);
-      border: 4px solid rgba(143, 113, 77, .45);
-      border-radius: 5px;
-    }
-
-    .paper-note button {
-      margin-top: 14px;
-      min-height: 40px;
-      padding: 8px 13px;
-      background: #bfe6bd;
-      border: 4px solid #5d8055;
-      border-radius: 8px;
-      font-weight: 900;
-    }
-
-    .field-player { left: 48%; bottom: 16vh; }
-
-    .grain {
-      position: absolute;
-      z-index: 6;
-      width: 40px;
-      height: 54px;
-      transform: translate(-50%, -50%);
-      transition: .2s;
-    }
-
-    .grain:before {
-      content: "";
-      position: absolute;
-      left: 18px;
-      top: 0;
-      width: 4px;
-      height: 54px;
-      background: #806f21;
-    }
-
-    .grain span {
-      position: absolute;
-      width: 14px;
-      height: 20px;
-      background: #f8d75f;
-      border: 3px solid #947c22;
-      border-radius: 10px 10px 10px 2px;
-    }
-
-    .grain span:nth-child(1) { left: 5px; top: 4px; transform: rotate(-34deg); }
-    .grain span:nth-child(2) { right: 4px; top: 10px; transform: rotate(34deg); }
-    .grain span:nth-child(3) { left: 5px; top: 27px; transform: rotate(-28deg); }
-    .grain span:nth-child(4) { right: 6px; top: 31px; transform: rotate(28deg); }
-    .grain.collected { opacity: 0; transform: translate(-50%, -50%) scale(.25); }
-
-    .field-ui {
-      position: absolute;
-      z-index: 12;
-      left: 24px;
-      bottom: 24px;
-      display: grid;
-      grid-template-columns: repeat(3, 68px);
-      gap: 8px;
-    }
-
-    .control {
-      width: 68px;
-      height: 52px;
-      margin: 0;
-      padding: 0;
-    }
-
-    .up { grid-column: 2; }
-    .left { grid-column: 1; grid-row: 2; }
-    .down { grid-column: 2; grid-row: 2; }
-    .right { grid-column: 3; grid-row: 2; }
-
-    .status, .final {
-      position: absolute;
-      z-index: 12;
-      left: 50%;
-      top: 18px;
-      width: min(850px, calc(100vw - 34px));
-      padding: 14px 18px;
-      transform: translateX(-50%);
-      text-align: center;
-      font-weight: 900;
-    }
-
-    .final {
-      top: 25px;
-      font-size: clamp(20px, 3vw, 32px);
-    }
-
-    svg { overflow: visible; filter: drop-shadow(0 8px 0 rgba(79, 61, 55, .12)); }
-
-    @media (max-width: 720px) {
-      .screen { min-height: 640px; }
-      .row { grid-template-columns: repeat(2, minmax(120px, 1fr)); }
-      .card { min-height: 142px; }
-      .custom { grid-template-columns: 1fr; gap: 8px; }
-      .preview { min-height: 138px; }
-      .tree { left: 2%; transform: scale(.75); transform-origin: bottom left; }
-      .house { left: 70%; transform: translateX(-50%) scale(.82); transform-origin: bottom center; }
-      .dialogue { bottom: 16px; font-size: 15px; }
-      .field-ui { left: 50%; transform: translateX(-50%); }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilguunzaya Mijiddorj - Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
 </head>
 <body>
-  <main>
-    <section id="start" class="screen active">
-      <div class="sky"></div><div class="hill"></div>
-      <button class="settings-button" id="settingsButton">Settings</button>
-      <div class="settings-panel" id="settingsPanel" aria-label="Settings panel">
-        <h2 id="settingsTitle">Settings</h2>
-        <label class="setting-row" for="languageSelect"><span id="languageLabel">Language</span>
-          <select id="languageSelect">
-            <option value="en">English</option>
-            <option value="es">Español</option>
-            <option value="fr">Français</option>
-          </select>
-        </label>
-        <label class="setting-row" for="nocturneVolume"><span id="volumeLabel">Nocturne Op. 9 No. 2 volume</span>
-          <input id="nocturneVolume" type="range" min="0" max="100" value="100">
-        </label>
-        <button class="settings-close" id="settingsClose">Done</button>
-      </div>
-      <div class="tree"><div class="trunk"></div><div class="blossom b1"></div><div class="blossom b2"></div><div class="blossom b3"></div><div class="blossom b4"></div></div>
-      <div class="puddle"></div><div class="house"><div class="cap"><i class="spot s1"></i><i class="spot s2"></i><i class="spot s3"></i></div><div class="base"><div class="door"></div></div></div><div class="ground"></div>
-      <div class="start-wrap"><div class="logo" id="startLogo">Start</div><button class="vine" id="startButton">Start</button></div>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span>BM</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#experience" class="nav-link">Experience</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#games" class="nav-link">Games</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <div class="hero-badge">
+                        <span>🚀 Available for Opportunities</span>
+                    </div>
+                    <h1 class="hero-title">
+                        Crafting the Future with <span class="highlight">Code & Innovation</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        I'm <span class="highlight">Bilguunzaya Mijiddorj</span>, a <span id="typed-text"></span>
+                    </p>
+                    <p class="hero-description">
+                        Bridging the gap between hardware and software at the University of Oklahoma. 
+                        From methane sensors to autonomous scooters, I turn complex problems into elegant solutions.
+                    </p>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">2</span>
+                            <span class="stat-label">Full Scholarships</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">100%</span>
+                            <span class="stat-label">Merit-Based</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">∞</span>
+                            <span class="stat-label">Potential</span>
+                        </div>
+                    </div>
+                    <div class="hero-buttons">
+                        <a href="#projects" class="btn btn-primary">
+                            <i class="fas fa-rocket"></i>
+                            Explore My Work
+                        </a>
+                        <a href="#contact" class="btn btn-secondary">
+                            <i class="fas fa-paper-plane"></i>
+                            Let's Connect
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="profile-card">
+                        <div class="profile-avatar">
+                            <img src="profile-picture.jpg" alt="Bek - Computer Science Graduate Student" class="profile-image">
+                        </div>
+                        <div class="profile-info">
+                            <h3>Bek</h3>
+                            <p>Norman, OK</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="scroll-indicator">
+                <div class="scroll-arrow"></div>
+            </div>
+        </div>
     </section>
 
-    <section id="select" class="screen">
-      <div class="sky"></div><div class="hill"></div><div class="ground"></div>
-      <div class="panel"><h1 id="chooseHeading">First, choose your character</h1><div class="row">
-        <button class="card" data-character="bird"><div data-sprite="bird"></div><span class="label" id="birdLabel">Bird</span></button>
-        <button class="card" data-character="frog"><div data-sprite="frog"></div><span class="label" id="frogLabel">Frog</span></button>
-        <button class="card" data-character="fox"><div data-sprite="fox"></div><span class="label" id="foxLabel">Fox</span></button>
-        <button class="card" data-character="cat"><div data-sprite="cat"></div><span class="label" id="catLabel">Cat</span></button>
-      </div></div>
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>
+                        I'm a graduate student pursuing my M.S. in Electrical and Computer Engineering at the University of Oklahoma, 
+                        with a strong foundation in Computer Science and Mathematics. My passion lies in developing innovative 
+                        solutions that bridge hardware and software, particularly in sensing systems and environmental monitoring.
+                    </p>
+                    <p>
+                        As a Graduate Research Assistant, I work on cutting-edge projects involving BLE-based hardware interfaces 
+                        and real-time sensor data analytics. I'm also the co-founder of NexLuSense, a sensor tech startup focused 
+                        on intelligent sensing and mobility platforms.
+                    </p>
+                    <div class="education-highlights">
+                        <div class="highlight-card">
+                            <i class="fas fa-graduation-cap"></i>
+                            <h4>M.S. ECE</h4>
+                            <p>University of Oklahoma</p>
+                        </div>
+                        <div class="highlight-card">
+                            <i class="fas fa-award"></i>
+                            <h4>3.7 GPA</h4>
+                            <p>Dean's List</p>
+                        </div>
+                        <div class="highlight-card">
+                            <i class="fas fa-star"></i>
+                            <h4>$4,000 Award</h4>
+                            <p>Young Aurora</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section id="customize" class="screen">
-      <div class="sky"></div><div class="ground"></div>
-      <div class="panel"><h1 id="customTitle"></h1><div class="custom">
-        <div class="preview" id="customPreview"></div>
-        <div><p id="customPrompt"></p><div id="catToggles" class="toggles" hidden>
-          <label class="toggle"><input type="checkbox" id="moonToggle"> <span id="moonLabel">Moon on the cheek</span></label>
-          <label class="toggle"><input type="checkbox" id="bagToggle"> <span id="bagLabel">Messenger's bag</span></label>
-        </div><div class="options" id="customOptions"></div></div>
-      </div></div>
+    <!-- Experience Section -->
+    <section id="experience" class="experience">
+        <div class="container">
+            <h2 class="section-title">Professional Experience</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <h3>Graduate Research Assistant</h3>
+                            <span class="timeline-date">Aug 2025 - Present</span>
+                        </div>
+                        <h4>University of Oklahoma – School of Electrical and Computer Engineering</h4>
+                        <ul>
+                            <li>Sponsored through research assistantship to support faculty-led projects in sensing systems and software</li>
+                            <li>Developed iOS and Android applications to interface with BLE-based hardware</li>
+                            <li>Conducted data analytics and visualization for real-time sensor measurements</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <h3>Undergraduate Research Assistant</h3>
+                            <span class="timeline-date">Jun 2024 - Aug 2024</span>
+                        </div>
+                        <h4>University of Oklahoma – School of Electrical and Computer Engineering</h4>
+                        <p><strong>Methane (CH4) Monitoring and Environmental Gas Emissions:</strong></p>
+                        <ul>
+                            <li>Actively engaged in comprehensive project focused on monitoring methane emissions</li>
+                            <li>Building and designing CH4 sensor device with software components</li>
+                            <li>Hardware and software integration for precise data collection and analysis</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <h3>University Residence Life Community Assistant</h3>
+                            <span class="timeline-date">Aug 2022 - May 2025</span>
+                        </div>
+                        <h4>University of Oklahoma</h4>
+                        <ul>
+                            <li>Front desk assistance and administrative support for campus housing</li>
+                            <li>College students campus assistance and guidance</li>
+                            <li>Community building and student support services</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <h3>New Sooner Orientation Guide</h3>
+                            <span class="timeline-date">May 2022 - Aug 2022</span>
+                        </div>
+                        <h4>University of Oklahoma</h4>
+                        <ul>
+                            <li>Helped incoming freshman students register for classes</li>
+                            <li>Guided new students around campus and facilities</li>
+                            <li>Assisted with pre-campus life preparation and transition</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <h3>Data Science Intern</h3>
+                            <span class="timeline-date">May 2023 - Jan 2024</span>
+                        </div>
+                        <h4>NovelSoft — Mongolia, Ulaanbaatar</h4>
+                        <ul>
+                            <li>Assisted in implementing machine learning models to solve real-world business problems</li>
+                            <li>Led creation of custom database system tailored to organizational needs</li>
+                            <li>Developed chatbot leveraging OpenAI API for automated customer queries</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <h3>Foods & Services Worker</h3>
+                            <span class="timeline-date">Sep 2021 - Mar 2022</span>
+                        </div>
+                        <h4>University of Oklahoma</h4>
+                        <ul>
+                            <li>Cashier duties and customer service in campus dining facilities</li>
+                            <li>Food preparation and cooking responsibilities</li>
+                            <li>Cleaning and maintenance duties to ensure facility standards</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section id="woodlands" class="screen">
-      <div class="wood-sky"></div><div class="hill"></div><div class="ground"></div>
-      <div class="house"><div class="cap"><i class="spot s1"></i><i class="spot s2"></i><i class="spot s3"></i></div><div class="base"><div class="door"></div></div></div>
-      <div class="rain" id="rainLayer"></div><div class="player" id="woodPlayer"></div><div class="tsuki" id="tsuki"></div><div class="portal" id="portal"></div>
-      <div class="map" id="oldMap">
-        <div class="map-title">The Woodlands</div>
-        <div class="map-lines"></div>
-        <div class="mountains" aria-hidden="true"><i class="mountain one"></i><i class="mountain two"></i><i class="mountain three"></i></div>
-        <div class="compass" aria-label="Map compass"><span class="north">N</span><span class="west">W</span><span class="east">E</span><span class="south">S</span></div>
-        <p class="map-label" style="left:12%;top:47%;">Mushroom Home</p>
-        <p class="map-label" style="right:12%;top:61%;">Wheat Fields</p>
-        <p class="map-label" style="left:42%;bottom:11%;">Castle Path</p>
-      </div>
-      <div class="dialogue" id="woodDialogue"></div>
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <div class="container">
+            <h2 class="section-title">Leadership & Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h3>XHale Health</h3>
+                    <p class="project-role">iOS Research App</p>
+                    <p class="project-description">
+                        iOS app for real-time carbon monoxide (CO) and temperature monitoring using BLE sensors. 
+                        Developed for research at OU Electrical Engineering Department with Firebase integration, 
+                        user authentication, and data export capabilities.
+                    </p>
+                    <div class="project-highlights">
+                        <span class="highlight-tag">iOS</span>
+                        <span class="highlight-tag">Swift</span>
+                        <span class="highlight-tag">BLE</span>
+                        <span class="highlight-tag">Firebase</span>
+                        <span class="highlight-tag">Research</span>
+                    </div>
+                    <a href="#" class="project-link" target="_blank">
+                        View Project <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>NexLuSense</h3>
+                    <p class="project-role">Founder and Software Lead</p>
+                    <p class="project-description">
+                        Co-founded a startup focused on intelligent sensing and mobility platforms. 
+                        Leading software development across web and mobile platforms.
+                    </p>
+                    <div class="project-highlights">
+                        <span class="highlight-tag">Startup</span>
+                        <span class="highlight-tag">Mobile Development</span>
+                        <span class="highlight-tag">Web Development</span>
+                    </div>
+                    <a href="https://nexlusense.com" class="project-link" target="_blank">
+                        Visit Website <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>OKE Ride</h3>
+                    <p class="project-role">Autonomous Platform</p>
+                    <p class="project-description">
+                        Engineering an autonomous three-legged scooter platform with vision and 
+                        GPS-based navigation technologies.
+                    </p>
+                    <div class="project-highlights">
+                        <span class="highlight-tag">Autonomous Systems</span>
+                        <span class="highlight-tag">Computer Vision</span>
+                        <span class="highlight-tag">GPS Navigation</span>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>OU AI and ML Club</h3>
+                    <p class="project-role">Executive</p>
+                    <p class="project-description">
+                        Served as Head of OU Computer Science Club, managing events and student engagement.
+                    </p>
+                    <div class="project-highlights">
+                        <span class="highlight-tag">Leadership</span>
+                        <span class="highlight-tag">Community</span>
+                        <span class="highlight-tag">Events</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section id="fields" class="screen">
-      <div class="castle"><i class="castle-flag left"></i><i class="castle-flag right"></i><i class="castle-window one"></i><i class="castle-window two"></i><i class="castle-door"></i></div>
-      <div class="castle-interior" id="castleInterior">
-        <div class="castle-arch"></div>
-        <div class="castle-banner left"></div>
-        <div class="castle-banner right"></div>
-        <div class="paper-note" id="paperNote">Im hiding from "them" right now,i have a plan to run away<br><button id="leaveCastle" onclick="startWheatFields()">Go outside</button></div>
-      </div>
-      <div class="status" id="fieldStatus"></div><div class="player field-player" id="fieldPlayer"></div><div id="grainLayer"></div>
-      <div class="field-ui"><button class="control up" data-move="up" id="upButton">Up</button><button class="control left" data-move="left" id="leftButton">Left</button><button class="control down" data-move="down" id="downButton">Down</button><button class="control right" data-move="right" id="rightButton">Right</button></div>
-      <div class="dialogue" id="fieldDialogue"></div>
+    <!-- Skills Section -->
+    <section id="skills" class="skills">
+        <div class="container">
+            <h2 class="section-title">Skills & Certifications</h2>
+            <div class="skills-content">
+                <div class="skills-category">
+                    <h3>Programming Languages</h3>
+                    <div class="skills-grid">
+                        <div class="skill-item">
+                            <span class="skill-name">Python</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Java</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">JavaScript</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">R</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 80%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">SQL</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Dart</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 75%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="skills-category">
+                    <h3>Tools & Technologies</h3>
+                    <div class="tools-grid">
+                        <div class="tool-item">
+                            <i class="fab fa-firebase"></i>
+                            <span>Firebase</span>
+                        </div>
+                        <div class="tool-item">
+                            <i class="fab fa-google"></i>
+                            <span>Google Cloud</span>
+                        </div>
+                        <div class="tool-item">
+                            <i class="fas fa-bluetooth"></i>
+                            <span>BLE</span>
+                        </div>
+                        <div class="tool-item">
+                            <i class="fab fa-git-alt"></i>
+                            <span>Git</span>
+                        </div>
+                        <div class="tool-item">
+                            <i class="fas fa-code"></i>
+                            <span>REST APIs</span>
+                        </div>
+                        <div class="tool-item">
+                            <i class="fab fa-react"></i>
+                            <span>React</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="certifications">
+                    <h3>Certifications</h3>
+                    <div class="cert-grid">
+                        <div class="cert-item">
+                            <i class="fas fa-certificate"></i>
+                            <span>Machine Learning Specialization</span>
+                        </div>
+                        <div class="cert-item">
+                            <i class="fas fa-certificate"></i>
+                            <span>Prompt Engineering</span>
+                        </div>
+                        <div class="cert-item">
+                            <i class="fas fa-certificate"></i>
+                            <span>LangChain for LLM</span>
+                        </div>
+                        <div class="cert-item">
+                            <i class="fas fa-certificate"></i>
+                            <span>GenAI and Transformers</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section id="ending" class="screen">
-      <div class="wood-sky"></div><div class="hill"></div><div class="ground"></div><div class="rain" id="endRainLayer"></div>
-      <div class="final" id="finalText">You now have the ability to go to the second map, the castle, and the wheat farm.</div>
-      <div class="player" id="endPlayer"></div><div class="tsuki" id="endTsuki"></div>
-      <div class="dialogue" id="endDialogue"><strong>Tsuki</strong>Great job! Now, we have enough grain for the harvest. Good luck on your journey to the second map!<br><button class="small" id="playAgain">Play again</button></div>
+    <!-- Interactive Games Section -->
+    <section id="games" class="games">
+        <div class="container">
+            <h2 class="section-title">Interactive Games</h2>
+            <p class="section-subtitle">Experience my technical skills through interactive demonstrations</p>
+            
+            <!-- Game Selector -->
+            <div class="game-selector">
+                <button class="game-select-btn active" onclick="selectGame('memory')">
+                    <span>🧠</span>
+                    <span>Memory</span>
+                </button>
+                <button class="game-select-btn" onclick="selectGame('snake')">
+                    <span>🐍</span>
+                    <span>Snake</span>
+                </button>
+                <button class="game-select-btn" onclick="selectGame('wordle')">
+                    <span>📝</span>
+                    <span>Wordle</span>
+                </button>
+            </div>
+            
+            <!-- Game Containers -->
+            <div class="games-container">
+                <!-- Memory Game -->
+                <div class="game-card active" id="memoryGame">
+                    <div class="game-header">
+                        <h3>🧠 Memory Game</h3>
+                        <p>Test your memory and pattern recognition skills!</p>
+                    </div>
+                    <div class="game-container">
+                        <div class="game-stats">
+                            <div class="stat">Score: <span id="memoryScore">0</span></div>
+                            <div class="stat">Moves: <span id="memoryMoves">0</span></div>
+                        </div>
+                        <div class="game-grid" id="memoryGrid"></div>
+                        <button class="game-btn" onclick="resetMemoryGame()">New Game</button>
+                    </div>
+                </div>
+
+                <!-- Snake Game -->
+                <div class="game-card" id="snakeGame">
+                    <div class="game-header">
+                        <h3>🐍 Snake Game</h3>
+                        <p>Classic snake game - grow longer by eating food!</p>
+                    </div>
+                    <div class="game-container">
+                        <div class="game-stats">
+                            <div class="stat">Score: <span id="snakeScore">0</span></div>
+                            <div class="stat">Length: <span id="snakeLength">1</span></div>
+                        </div>
+                        <canvas id="snakeCanvas" width="400" height="400"></canvas>
+                        <div class="game-controls">
+                            <button class="game-btn" onclick="startSnakeGame()">Start Game</button>
+                            <button class="game-btn" onclick="pauseSnakeGame()">Pause</button>
+                        </div>
+                        <div class="game-instructions">
+                            <p>Use arrow keys or WASD to control the snake</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wordle Game -->
+                <div class="game-card" id="wordleGame">
+                    <div class="game-header">
+                        <h3>📝 Wordle</h3>
+                        <p>Guess the 5-letter word in 6 tries!</p>
+                    </div>
+                    <div class="game-container">
+                        <div class="game-stats">
+                            <div class="stat">Guesses: <span id="wordleGuesses">0</span>/6</div>
+                            <div class="stat">Wins: <span id="wordleWins">0</span></div>
+                        </div>
+                        <div class="wordle-grid" id="wordleGrid"></div>
+                        <div class="wordle-loading" id="wordleLoading" style="display: none;">
+                            <p>Loading new word...</p>
+                        </div>
+                        <div class="wordle-keyboard" id="wordleKeyboard">
+                            <!-- Keyboard will be generated by JavaScript -->
+                        </div>
+                        <div class="game-instructions">
+                            <p><strong>How to play:</strong></p>
+                            <p>• Type letters to fill the grid</p>
+                            <p>• Press Enter to submit your guess</p>
+                            <p>• Green = correct letter & position</p>
+                            <p>• Yellow = correct letter, wrong position</p>
+                            <p>• Gray = letter not in word</p>
+                            <p>• <em>Words are validated using a dictionary API</em></p>
+                        </div>
+                        <button class="game-btn" onclick="resetWordleGame()">New Word</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
-  </main>
 
-  <script>
-    const state = {
-      character: "cat", color: "white", moon: false, bag: false,
-      language: "en", nocturneVolume: 1,
-      audioContext: null, rainNodes: [], musicTimer: null,
-      playerX: 50, playerY: 74, fieldMode: "castle",
-      grains: [
-        {x:14,y:54,c:false},{x:22,y:64,c:false},{x:30,y:56,c:false},{x:38,y:70,c:false},
-        {x:46,y:58,c:false},{x:54,y:72,c:false},{x:62,y:60,c:false},{x:70,y:74,c:false},
-        {x:78,y:55,c:false},{x:86,y:67,c:false},{x:18,y:78,c:false},{x:28,y:84,c:false},
-        {x:40,y:82,c:false},{x:52,y:86,c:false},{x:64,y:83,c:false},{x:76,y:84,c:false},
-        {x:88,y:79,c:false},{x:34,y:47,c:false},{x:48,y:45,c:false},{x:60,y:49,c:false},
-        {x:72,y:46,c:false},{x:82,y:50,c:false},{x:24,y:72,c:false},{x:58,y:65,c:false}
-      ]
-    };
-    const screens = [...document.querySelectorAll(".screen")];
-    const woodDialogue = document.getElementById("woodDialogue");
-    const fieldDialogue = document.getElementById("fieldDialogue");
-    const fieldStatus = document.getElementById("fieldStatus");
-    const grainLayer = document.getElementById("grainLayer");
-    const words = {
-      en: {
-        settings: "Settings", done: "Done", language: "Language", volume: "Nocturne Op. 9 No. 2 volume",
-        start: "Start", choose: "First, choose your character", bird: "Bird", frog: "Frog", fox: "Fox", cat: "Cat",
-        moon: "Moon on the cheek", bag: "Messenger's bag", foxTitle: "Fox fur color", catTitle: "Cat fur color",
-        foxPrompt: "Choose which color you want for the fox's fur", catPrompt: "Choose which color you want for the cat's fur",
-        lightOrange: "Light Orange", pastelRed: "Pastel Red", black: "Black", lightBrown: "Light Brown", lightGray: "Light Gray",
-        up: "Up", down: "Down", left: "Left", right: "Right",
-        tsukiHello: "Hello! My name is Tsuki! Can you help me with this year's harvest?",
-        askHarvest: "Ok but what's a harvest and how do I help?",
-        harvestStory: "The harvest happens every spring, and if we don't have a good harvest, it would be bad for us. We have to look around the forest for clues of where the food is. One of my friends told me about an old story, of a place with endless wheat and grain, with a castle made of marble and gold with an orb of limitless power, but that's just a story. Here is a map to help you on your journey, but be careful, not everything is as it seems.",
-        takeMap: "Take the map", mapTremble: "The old map trembles in the rain. A strange light opens near the mushroom house.",
-        fieldQuestion: "How did I get here? Isn't this the story Tsuki said her friends told her?",
-        fieldInstructions: "Walk through the wheat fields to get grain for the harvest.", grain: "Grain gathered",
-        leaveCastle: "Go outside",
-        lastGrain: "The last bundle of grain glows warmly. The forest path calls you home.",
-        final: "You now have the ability to go to the second map, the castle, and the wheat farm.",
-        endTsuki: "Great job! Now, we have enough grain for the harvest. Good luck on your journey to the second map!",
-        playAgain: "Play again", system: "System", you: "You"
-      },
-      es: {
-        settings: "Ajustes", done: "Listo", language: "Idioma", volume: "Volumen de Nocturno Op. 9 No. 2",
-        start: "Empezar", choose: "Primero, elige tu personaje", bird: "Ave", frog: "Rana", fox: "Zorro", cat: "Gato",
-        moon: "Luna en la mejilla", bag: "Bolsa de mensajero", foxTitle: "Color del zorro", catTitle: "Color del gato",
-        foxPrompt: "Elige el color que quieres para el pelaje del zorro", catPrompt: "Elige el color que quieres para el pelaje del gato",
-        lightOrange: "Naranja claro", pastelRed: "Rojo pastel", black: "Negro", lightBrown: "Marron claro", lightGray: "Gris claro",
-        up: "Arriba", down: "Abajo", left: "Izquierda", right: "Derecha",
-        tsukiHello: "Hola! Me llamo Tsuki! Puedes ayudarme con la cosecha de este ano?",
-        askHarvest: "Bueno, pero que es una cosecha y como ayudo?",
-        harvestStory: "La cosecha ocurre cada primavera, y si no tenemos una buena cosecha, seria malo para nosotros. Tenemos que buscar pistas en el bosque sobre donde esta la comida. Una de mis amistades me conto una vieja historia sobre un lugar con trigo y grano infinitos, con un castillo de marmol y oro y un orbe de poder sin limites, pero eso es solo una historia. Aqui tienes un mapa para ayudarte en tu viaje, pero ten cuidado, no todo es lo que parece.",
-        takeMap: "Tomar el mapa", mapTremble: "El mapa viejo tiembla bajo la lluvia. Una luz extrana se abre cerca de la casa hongo.",
-        fieldQuestion: "Como llegue aqui? No es esta la historia que Tsuki dijo que le contaron sus amistades?",
-        fieldInstructions: "Camina por los campos de trigo para recoger grano para la cosecha.", grain: "Grano reunido", leaveCastle: "Salir",
-        lastGrain: "El ultimo manojo de grano brilla con calidez. El sendero del bosque te llama a casa.",
-        final: "Ahora tienes la habilidad de ir al segundo mapa, el castillo y la granja de trigo.",
-        endTsuki: "Gran trabajo! Ahora tenemos suficiente grano para la cosecha. Buena suerte en tu viaje al segundo mapa!",
-        playAgain: "Jugar de nuevo", system: "Sistema", you: "Tu"
-      },
-      fr: {
-        settings: "Reglages", done: "Termine", language: "Langue", volume: "Volume du Nocturne Op. 9 No. 2",
-        start: "Demarrer", choose: "D'abord, choisis ton personnage", bird: "Oiseau", frog: "Grenouille", fox: "Renard", cat: "Chat",
-        moon: "Lune sur la joue", bag: "Sac de messager", foxTitle: "Couleur du renard", catTitle: "Couleur du chat",
-        foxPrompt: "Choisis la couleur que tu veux pour la fourrure du renard", catPrompt: "Choisis la couleur que tu veux pour la fourrure du chat",
-        lightOrange: "Orange clair", pastelRed: "Rouge pastel", black: "Noir", lightBrown: "Brun clair", lightGray: "Gris clair",
-        up: "Haut", down: "Bas", left: "Gauche", right: "Droite",
-        tsukiHello: "Bonjour! Je m'appelle Tsuki! Peux-tu m'aider avec la recolte de cette annee?",
-        askHarvest: "D'accord, mais c'est quoi une recolte et comment j'aide?",
-        harvestStory: "La recolte a lieu chaque printemps, et si nous n'avons pas une bonne recolte, ce serait mauvais pour nous. Nous devons chercher dans la foret des indices pour trouver la nourriture. Une de mes amies m'a raconte une vieille histoire, celle d'un endroit avec du ble et du grain sans fin, un chateau de marbre et d'or et un orbe au pouvoir illimite, mais ce n'est qu'une histoire. Voici une carte pour t'aider dans ton voyage, mais fais attention, tout n'est pas ce qu'il semble etre.",
-        takeMap: "Prendre la carte", mapTremble: "La vieille carte tremble sous la pluie. Une lumiere etrange s'ouvre pres de la maison champignon.",
-        fieldQuestion: "Comment suis-je arrive ici? N'est-ce pas l'histoire que les amis de Tsuki lui ont racontee?",
-        fieldInstructions: "Marche dans les champs de ble pour ramasser du grain pour la recolte.", grain: "Grain ramasse", leaveCastle: "Sortir",
-        lastGrain: "La derniere gerbe de grain brille doucement. Le chemin de la foret te rappelle chez toi.",
-        final: "Tu peux maintenant aller vers la deuxieme carte, le chateau et la ferme de ble.",
-        endTsuki: "Beau travail! Maintenant, nous avons assez de grain pour la recolte. Bonne chance pour ton voyage vers la deuxieme carte!",
-        playAgain: "Rejouer", system: "Systeme", you: "Toi"
-      }
-    };
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h4>Phone</h4>
+                            <p>(405) 981-8456</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p>Bek@ou.edu</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Location</h4>
+                            <p>Norman, OK</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="social-links">
+                    <a href="#" class="social-link" target="_blank">
+                        <i class="fab fa-linkedin"></i>
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="#" class="social-link" target="_blank">
+                        <i class="fab fa-github"></i>
+                        <span>GitHub</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    function showScreen(id) { screens.forEach(s => s.classList.toggle("active", s.id === id)); }
-    function t(key) { return words[state.language][key] || words.en[key] || key; }
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Bilguunzaya Mijiddorj. All rights reserved.</p>
+        </div>
+    </footer>
 
-    function sprite(type, o = {}) {
-      const c = o.color || "white";
-      const eye = type === "cat" && c === "black" ? "#fff" : "#322d33";
-      const bag = o.bag ? `<path d="M78 76h32v27H78z" fill="#9b7358" stroke="#5d4539" stroke-width="5"/><path d="M78 78c9-20 28-20 36 0" fill="none" stroke="#5d4539" stroke-width="4"/>` : "";
-      const moon = o.moon ? `<path d="M43 52c8 8 16 2 18-6-8 5-16 2-18-7-6 4-6 9 0 13z" fill="#f5dd76" stroke="#7e6a5e" stroke-width="2"/>` : "";
-      if (type === "bird") return `<svg viewBox="0 0 120 120"><ellipse cx="60" cy="62" rx="38" ry="31" fill="#9ed4ee" stroke="#566f78" stroke-width="5"/><path d="M28 59c-18 7-23 22-13 30 16-2 29-10 42-27z" fill="#83bfde" stroke="#566f78" stroke-width="5"/><path d="M54 31l16-22 9 27z" fill="#71abd2" stroke="#566f78" stroke-width="5"/><circle cx="75" cy="54" r="5" fill="#222"/><path d="M91 61l20 8-20 8z" fill="#f2be63" stroke="#7b6030" stroke-width="4"/><path d="M51 90l-6 15M70 91l5 15" stroke="#6f6042" stroke-width="5" stroke-linecap="round"/></svg>`;
-      if (type === "frog") return `<svg viewBox="0 0 120 120"><ellipse cx="60" cy="70" rx="43" ry="31" fill="#9bd878" stroke="#557b4b" stroke-width="5"/><circle cx="38" cy="44" r="18" fill="#9bd878" stroke="#557b4b" stroke-width="5"/><circle cx="82" cy="44" r="18" fill="#9bd878" stroke="#557b4b" stroke-width="5"/><circle cx="38" cy="42" r="7" fill="#222"/><circle cx="82" cy="42" r="7" fill="#222"/><path d="M42 76c13 13 28 13 42 0" fill="none" stroke="#557b4b" stroke-width="5" stroke-linecap="round"/><ellipse cx="35" cy="96" rx="21" ry="9" fill="#83c665" stroke="#557b4b" stroke-width="4"/><ellipse cx="85" cy="96" rx="21" ry="9" fill="#83c665" stroke="#557b4b" stroke-width="4"/></svg>`;
-      if (type === "fox") return `<svg viewBox="0 0 120 120" aria-label="Super kawaii fluffy fox"><path d="M73 83c25 5 40-9 38-30-8 14-23 17-39 12z" fill="${c}" stroke="#6b4e43" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M101 56c-6 10-17 14-29 10 8 8 22 8 32-1" fill="none" stroke="#fff8ef" stroke-width="10" stroke-linecap="round"/><ellipse cx="61" cy="84" rx="24" ry="22" fill="${c}" stroke="#6b4e43" stroke-width="5"/><path d="M49 80c5 18 20 18 25 0-8 5-17 5-25 0z" fill="#fff8ef"/><ellipse cx="48" cy="101" rx="10" ry="7" fill="#fff8ef" stroke="#6b4e43" stroke-width="4"/><ellipse cx="75" cy="101" rx="10" ry="7" fill="#fff8ef" stroke="#6b4e43" stroke-width="4"/><path d="M30 55 24 20 51 42z" fill="${c}" stroke="#6b4e43" stroke-width="5" stroke-linejoin="round"/><path d="M90 55 96 20 69 42z" fill="${c}" stroke="#6b4e43" stroke-width="5" stroke-linejoin="round"/><path d="M34 47c-7 13-3 33 11 42 10 7 22 7 32 0 14-9 18-29 10-42-10-17-43-17-53 0z" fill="${c}" stroke="#6b4e43" stroke-width="5"/><path d="M37 59c7 22 39 22 46 0-9 7-15 9-23 9s-14-2-23-9z" fill="#fff8ef" stroke="#6b4e43" stroke-width="3" stroke-linejoin="round"/><path d="M48 42c6-5 18-6 25 0" fill="none" stroke="#fff1dd" stroke-width="5" stroke-linecap="round"/><ellipse cx="47" cy="60" rx="7" ry="9" fill="#2d2529"/><ellipse cx="73" cy="60" rx="7" ry="9" fill="#2d2529"/><circle cx="50" cy="56" r="3" fill="#fff"/><circle cx="76" cy="56" r="3" fill="#fff"/><path d="M42 51h8M70 51h8" stroke="#6b4e43" stroke-width="3" stroke-linecap="round"/><circle cx="39" cy="70" r="5" fill="#f6a8b1" opacity=".75"/><circle cx="81" cy="70" r="5" fill="#f6a8b1" opacity=".75"/><path d="M60 69l7 6H53z" fill="#47353c"/><path d="M51 80c5 4 13 4 18 0" fill="none" stroke="#6b4e43" stroke-width="3" stroke-linecap="round"/><path d="M35 29l9 11M85 29l-9 11" stroke="#fff8ef" stroke-width="5" stroke-linecap="round"/></svg>`;
-      return `<svg viewBox="0 0 120 120" aria-label="Kawaii fluffy cat"><path d="M25 58L20 24l28 19z" fill="${c}" stroke="#6b5d58" stroke-width="5" stroke-linejoin="round"/><path d="M95 58l5-34-28 19z" fill="${c}" stroke="#6b5d58" stroke-width="5" stroke-linejoin="round"/><path d="M33 50c-8 13-5 32 9 42 12 9 29 9 41 0 14-10 17-29 9-42-10-18-49-18-59 0z" fill="${c}" stroke="#6b5d58" stroke-width="5"/><path d="M40 76c9 18 31 18 40 0-11 6-29 6-40 0z" fill="#fff8f0" opacity=".88"/><ellipse cx="47" cy="60" rx="8" ry="10" fill="${eye}"/><ellipse cx="73" cy="60" rx="8" ry="10" fill="${eye}"/><circle cx="50" cy="56" r="3" fill="${c === "black" ? "#dff8ff" : "#fff"}"/><circle cx="76" cy="56" r="3" fill="${c === "black" ? "#dff8ff" : "#fff"}"/><circle cx="38" cy="69" r="5" fill="#f1a0aa" opacity=".75"/><circle cx="82" cy="69" r="5" fill="#f1a0aa" opacity=".75"/><path d="M60 68l7 6H53z" fill="#d68b94"/><path d="M50 80c6 5 14 5 20 0" fill="none" stroke="#70616b" stroke-width="3" stroke-linecap="round"/><path d="M31 61h-17M33 70H16M87 61h17M85 70h17" stroke="#70616b" stroke-width="3" stroke-linecap="round"/><path d="M91 78c29 2 28 33 2 29-9-1-11-10-3-14 10-4 14 4 6 9" fill="none" stroke="${c}" stroke-width="12" stroke-linecap="round"/><path d="M91 78c29 2 28 33 2 29-9-1-11-10-3-14 10-4 14 4 6 9" fill="none" stroke="#6b5d58" stroke-width="4" stroke-linecap="round"/><ellipse cx="45" cy="96" rx="11" ry="8" fill="#fff8f0" stroke="#6b5d58" stroke-width="4"/><ellipse cx="75" cy="96" rx="11" ry="8" fill="#fff8f0" stroke="#6b5d58" stroke-width="4"/>${moon}${bag}</svg>`;
-    }
+    <!-- Chatbot -->
+    <div class="chatbot-container" id="chatbotContainer">
+        <button class="chatbot-toggle" onclick="toggleChatbot()">
+            🤖
+        </button>
+        
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="chatbot-header">
+                <span>🤖</span>
+                <h3>Bek's AI Assistant</h3>
+            </div>
+            
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="message bot">
+                    Hi! I'm Bek's AI assistant. I can help you learn more about his skills, projects, and experience. What would you like to know?
+                </div>
+                <div class="quick-replies">
+                    <button class="quick-reply" onclick="sendQuickReply('skills')">Skills</button>
+                    <button class="quick-reply" onclick="sendQuickReply('projects')">Projects</button>
+                    <button class="quick-reply" onclick="sendQuickReply('experience')">Experience</button>
+                    <button class="quick-reply" onclick="sendQuickReply('education')">Education</button>
+                    <button class="quick-reply" onclick="sendQuickReply('research')">Research</button>
+                    <button class="quick-reply" onclick="sendQuickReply('contact')">Contact</button>
+                </div>
+            </div>
+            
+            <div class="typing-indicator" id="typingIndicator">
+                <div class="typing-dots">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            </div>
+            
+            <div class="chatbot-input">
+                <input type="text" id="chatbotInput" placeholder="Ask me about Bek..." onkeypress="handleKeyPress(event)">
+                <button onclick="sendMessage()">➤</button>
+            </div>
+        </div>
+    </div>
 
-    function currentSprite() { return sprite(state.character, { color: state.color, moon: state.moon, bag: state.bag }); }
-    function setText(id, text) {
-      const el = document.getElementById(id);
-      if (el) el.textContent = text;
-    }
+    <!-- Win Modal for Games -->
+    <div class="win-modal" id="winModal">
+        <div class="win-content">
+            <h2 id="winTitle">🎉 Congratulations!</h2>
+            <p id="winMessage">You completed the game!</p>
+            <button class="game-btn" onclick="closeWinModal()">Play Again</button>
+        </div>
+    </div>
 
-    function applyLanguage() {
-      document.documentElement.lang = state.language;
-      setText("settingsButton", t("settings"));
-      setText("settingsTitle", t("settings"));
-      setText("languageLabel", t("language"));
-      setText("volumeLabel", t("volume"));
-      setText("settingsClose", t("done"));
-      setText("startLogo", t("start"));
-      setText("startButton", t("start"));
-      setText("chooseHeading", t("choose"));
-      setText("birdLabel", t("bird"));
-      setText("frogLabel", t("frog"));
-      setText("foxLabel", t("fox"));
-      setText("catLabel", t("cat"));
-      setText("moonLabel", t("moon"));
-      setText("bagLabel", t("bag"));
-      setText("upButton", t("up"));
-      setText("downButton", t("down"));
-      setText("leftButton", t("left"));
-      setText("rightButton", t("right"));
-      setText("finalText", t("final"));
-      const leaveCastle = document.getElementById("leaveCastle");
-      if (leaveCastle) leaveCastle.textContent = t("leaveCastle");
-      if (document.getElementById("fields").classList.contains("active")) renderField();
-      if (document.getElementById("ending").classList.contains("active")) renderEndDialogue();
-    }
-    document.querySelectorAll("[data-sprite]").forEach(slot => slot.innerHTML = sprite(slot.dataset.sprite, { color: slot.dataset.sprite === "fox" ? "#ffc58f" : "white" }));
-
-    function createRain(id, count) {
-      const layer = document.getElementById(id);
-      layer.innerHTML = "";
-      for (let i = 0; i < count; i++) {
-        const d = document.createElement("i");
-        d.className = "drop";
-        d.style.left = `${Math.random() * 100}%`;
-        d.style.animationDelay = `${Math.random() * -1.8}s`;
-        d.style.animationDuration = `${.7 + Math.random() * .55}s`;
-        layer.appendChild(d);
-      }
-    }
-
-    function audioCtx() {
-      if (!state.audioContext) state.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      if (state.audioContext.state === "suspended") state.audioContext.resume();
-      return state.audioContext;
-    }
-
-    function stopRainSound() {
-      state.rainNodes.forEach(n => { try { n.stop(); } catch(e) {} try { n.disconnect(); } catch(e) {} });
-      state.rainNodes = [];
-    }
-
-    function stopAudio() {
-      stopRainSound();
-      if (state.musicTimer) clearInterval(state.musicTimer);
-      state.musicTimer = null;
-    }
-
-    function startRainSound() {
-      const ctx = audioCtx();
-      stopRainSound();
-      const size = ctx.sampleRate * 2;
-      const buffer = ctx.createBuffer(1, size, ctx.sampleRate);
-      const data = buffer.getChannelData(0);
-      for (let i = 0; i < size; i++) data[i] = (Math.random() * 2 - 1) * .38;
-      const src = ctx.createBufferSource(), low = ctx.createBiquadFilter(), high = ctx.createBiquadFilter(), gain = ctx.createGain();
-      src.buffer = buffer; src.loop = true; low.type = "lowpass"; low.frequency.value = 900; high.type = "highpass"; high.frequency.value = 180; gain.gain.value = .055;
-      src.connect(low).connect(high).connect(gain).connect(ctx.destination);
-      src.start();
-      state.rainNodes = [src, low, high, gain];
-    }
-
-    function tone(freq, start, dur, type = "sine", vol = .08) {
-      const ctx = audioCtx(), osc = ctx.createOscillator(), gain = ctx.createGain();
-      osc.type = type;
-      osc.frequency.setValueAtTime(freq, start);
-      gain.gain.setValueAtTime(.0001, start);
-      gain.gain.exponentialRampToValueAtTime(vol, start + .012);
-      gain.gain.exponentialRampToValueAtTime(vol * .28, start + Math.max(.08, dur * .38));
-      gain.gain.exponentialRampToValueAtTime(.0001, start + dur);
-      osc.connect(gain).connect(ctx.destination);
-      osc.start(start);
-      osc.stop(start + dur + .04);
-    }
-
-    function pianoNote(freq, start, dur, vol = .11) {
-      const scaled = vol * state.nocturneVolume;
-      if (scaled <= 0) return;
-      tone(freq, start, dur, "triangle", scaled);
-      tone(freq * 2.01, start + .008, dur * .58, "sine", scaled * .42);
-      tone(freq * 3.01, start + .012, dur * .32, "sine", scaled * .18);
-    }
-
-    function startEndMusic() {
-      if (state.musicTimer) return;
-      const ctx = audioCtx();
-      const melody = [
-        [466, .00, .62], [392, .68, .24], [415, .98, .28], [466, 1.32, .74],
-        [523, 2.18, .30], [466, 2.52, .30], [415, 2.86, .30], [392, 3.20, .82],
-        [349, 4.12, .32], [392, 4.48, .28], [415, 4.82, .28], [466, 5.16, .72],
-        [622, 6.02, .38], [587, 6.44, .34], [523, 6.82, .34], [466, 7.20, .84]
-      ];
-      const left = [
-        [155, .00, .72], [233, .36, .38], [311, .72, .38], [392, 1.08, .38],
-        [174, 1.44, .72], [261, 1.80, .38], [349, 2.16, .38], [415, 2.52, .38],
-        [146, 2.88, .72], [220, 3.24, .38], [293, 3.60, .38], [349, 3.96, .38],
-        [155, 4.32, .72], [233, 4.68, .38], [311, 5.04, .38], [392, 5.40, .38],
-        [174, 5.76, .72], [261, 6.12, .38], [349, 6.48, .38], [415, 6.84, .38]
-      ];
-      function loop() {
-        const now = ctx.currentTime + .04;
-        melody.forEach(([note, at, dur]) => pianoNote(note, now + at, dur, .13));
-        left.forEach(([note, at, dur]) => pianoNote(note, now + at, dur, .075));
-      }
-      loop(); state.musicTimer = setInterval(loop, 8300);
-    }
-
-    function unlockSound() {
-      audioCtx();
-      startEndMusic();
-    }
-
-    function enterGame() {
-      unlockSound();
-      showScreen("select");
-    }
-
-    function startWoodlands() {
-      showScreen("woodlands"); createRain("rainLayer", 95);
-      document.getElementById("woodPlayer").innerHTML = currentSprite();
-      document.getElementById("woodPlayer").classList.remove("sucked");
-      document.getElementById("tsuki").innerHTML = sprite("cat", { color: "white" });
-      document.getElementById("portal").classList.remove("open");
-      document.getElementById("oldMap").classList.remove("show");
-      startRainSound();
-      woodDialogue.innerHTML = `<strong>Tsuki</strong>${t("tsukiHello")}<br><button id="askHarvest">${t("askHarvest")}</button>`;
-      document.getElementById("askHarvest").onclick = showHarvestStory;
-    }
-
-    function showHarvestStory() {
-      woodDialogue.innerHTML = `<strong>Tsuki</strong>${t("harvestStory")}<br><button id="takeMap">${t("takeMap")}</button>`;
-      document.getElementById("takeMap").onclick = revealMap;
-    }
-
-    function revealMap() {
-      document.getElementById("oldMap").classList.add("show");
-      woodDialogue.innerHTML = `<strong>${t("system")}</strong>${t("mapTremble")}`;
-      setTimeout(() => {
-        document.getElementById("oldMap").classList.remove("show");
-        document.getElementById("portal").classList.add("open");
-        setTimeout(() => document.getElementById("woodPlayer").classList.add("sucked"), 500);
-        setTimeout(startFields, 1900);
-      }, 1700);
-    }
-
-    function startFields() {
-      showScreen("fields"); stopRainSound();
-      startEndMusic();
-      state.fieldMode = "castle";
-      state.playerX = 50; state.playerY = 74; state.grains.forEach(g => g.c = false);
-      document.getElementById("fields").classList.add("castle-mode");
-      document.getElementById("fieldPlayer").innerHTML = currentSprite();
-      document.getElementById("paperNote").innerHTML = `Im hiding from "them" right now,i have a plan to run away<br><button id="leaveCastle" onclick="startWheatFields()">${t("leaveCastle")}</button>`;
-      document.getElementById("leaveCastle").onclick = startWheatFields;
-      document.getElementById("paperNote").onclick = startWheatFields;
-      setTimeout(() => {
-        if (document.getElementById("fields").classList.contains("active") && state.fieldMode === "castle") startWheatFields();
-      }, 8000);
-      fieldDialogue.innerHTML = `<strong>${t("you")}</strong>${t("fieldQuestion")}`;
-      renderField();
-    }
-
-    function startWheatFields() {
-      state.fieldMode = "wheat";
-      document.getElementById("fields").classList.remove("castle-mode");
-      state.playerX = 50;
-      state.playerY = 74;
-      fieldDialogue.innerHTML = `<strong>${t("system")}</strong>${t("fieldInstructions")}`;
-      renderField();
-    }
-    window.startWheatFields = startWheatFields;
-
-    function renderField() {
-      const p = document.getElementById("fieldPlayer");
-      p.style.left = `${state.playerX}%`; p.style.bottom = `${100 - state.playerY}%`;
-      grainLayer.innerHTML = "";
-      if (state.fieldMode === "castle") return;
-      state.grains.forEach(g => {
-        const el = document.createElement("div");
-        el.className = `grain ${g.c ? "collected" : ""}`;
-        el.style.left = `${g.x}%`; el.style.top = `${g.y}%`;
-        el.innerHTML = "<span></span><span></span><span></span><span></span>";
-        grainLayer.appendChild(el);
-      });
-      checkCollection();
-      const left = state.grains.filter(g => !g.c).length;
-      fieldStatus.textContent = `${t("grain")}: ${state.grains.length - left}/${state.grains.length}`;
-    }
-
-    function movePlayer(dir) {
-      if (state.fieldMode !== "wheat") return;
-      const step = 7;
-      if (dir === "up") state.playerY = Math.max(40, state.playerY - step);
-      if (dir === "down") state.playerY = Math.min(82, state.playerY + step);
-      if (dir === "left") state.playerX = Math.max(10, state.playerX - step);
-      if (dir === "right") state.playerX = Math.min(90, state.playerX + step);
-      renderField();
-      if (state.grains.every(g => g.c)) {
-        fieldDialogue.innerHTML = `<strong>${t("system")}</strong>${t("lastGrain")}`;
-        setTimeout(startEnding, 850);
-      }
-    }
-
-    function checkCollection() {
-      state.grains.forEach(g => {
-        if (!g.c && Math.hypot(g.x - state.playerX, g.y - state.playerY) < 8.5) g.c = true;
-      });
-    }
-
-    function startEnding() {
-      showScreen("ending"); createRain("endRainLayer", 75);
-      document.getElementById("endPlayer").innerHTML = currentSprite();
-      document.getElementById("endTsuki").innerHTML = sprite("cat", { color: "#caa071" });
-      renderEndDialogue();
-      startEndMusic();
-    }
-
-    function renderEndDialogue() {
-      document.getElementById("endDialogue").innerHTML = `<strong>Tsuki</strong>${t("endTsuki")}<br><button class="small" id="playAgain">${t("playAgain")}</button>`;
-      document.getElementById("playAgain").onclick = () => { stopAudio(); showScreen("start"); };
-    }
-
-    function openCustomize(kind) {
-      state.character = kind; showScreen("customize");
-      const preview = document.getElementById("customPreview"), options = document.getElementById("customOptions"), toggles = document.getElementById("catToggles");
-      document.getElementById("customTitle").textContent = kind === "fox" ? t("foxTitle") : t("catTitle");
-      document.getElementById("customPrompt").textContent = kind === "fox" ? t("foxPrompt") : t("catPrompt");
-      toggles.hidden = kind !== "cat";
-      state.color = kind === "fox" ? "#ffc58f" : "white";
-      preview.innerHTML = sprite(kind, { color: state.color, moon: state.moon, bag: state.bag });
-      const choices = kind === "fox" ? [[t("lightOrange"),"#ffc58f"],[t("pastelRed"),"#ffb4b8"]] : [[t("black"),"black"],[t("lightBrown"),"#caa071"],[t("lightGray"),"#cfd0d4"]];
-      options.innerHTML = "";
-      choices.forEach(([label, color]) => {
-        const b = document.createElement("button");
-        b.className = "option"; b.textContent = label; b.style.background = color === "black" ? "#383239" : color; b.style.color = color === "black" ? "#fff" : "var(--ink)";
-        b.onclick = () => { state.color = color; startWoodlands(); };
-        options.appendChild(b);
-      });
-    }
-
-    document.addEventListener("pointerdown", unlockSound, { once: true });
-    document.addEventListener("touchstart", unlockSound, { once: true });
-    document.addEventListener("click", unlockSound, { once: true });
-    document.addEventListener("keydown", unlockSound, { once: true });
-
-    document.getElementById("settingsButton").onclick = () => {
-      unlockSound();
-      document.getElementById("settingsPanel").classList.toggle("open");
-    };
-    document.getElementById("settingsClose").onclick = () => {
-      document.getElementById("settingsPanel").classList.remove("open");
-    };
-    document.getElementById("languageSelect").onchange = e => {
-      state.language = e.target.value;
-      applyLanguage();
-    };
-    document.getElementById("nocturneVolume").oninput = e => {
-      state.nocturneVolume = Number(e.target.value) / 100;
-    };
-
-    document.getElementById("startButton").onclick = enterGame;
-    document.querySelectorAll(".card").forEach(card => card.onclick = () => {
-      const c = card.dataset.character;
-      state.character = c; state.moon = false; state.bag = false;
-      if (c === "frog") { state.color = "#9bd878"; startWoodlands(); }
-      else if (c === "bird") { state.color = "#9ed4ee"; startWoodlands(); }
-      else openCustomize(c);
-    });
-    document.getElementById("moonToggle").onchange = e => { state.moon = e.target.checked; document.getElementById("customPreview").innerHTML = sprite("cat", { color: state.color, moon: state.moon, bag: state.bag }); };
-    document.getElementById("bagToggle").onchange = e => { state.bag = e.target.checked; document.getElementById("customPreview").innerHTML = sprite("cat", { color: state.color, moon: state.moon, bag: state.bag }); };
-    document.querySelectorAll(".control").forEach(b => b.onclick = () => movePlayer(b.dataset.move));
-    document.addEventListener("click", e => {
-      if (e.target && e.target.id === "leaveCastle") startWheatFields();
-    });
-    document.addEventListener("keydown", e => {
-      unlockSound();
-      if (!document.getElementById("fields").classList.contains("active")) return;
-      const m = { ArrowUp: "up", ArrowDown: "down", ArrowLeft: "left", ArrowRight: "right" };
-      if (m[e.key]) { e.preventDefault(); movePlayer(m[e.key]); }
-    });
-    document.getElementById("playAgain").onclick = () => { stopAudio(); showScreen("start"); };
-    applyLanguage();
-  </script>
+    <script src="script.js"></script>
 </body>
-</html>
+</html> 
